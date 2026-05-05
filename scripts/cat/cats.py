@@ -2808,7 +2808,7 @@ class Cat:
                 )
 
     @staticmethod
-    def edit_relationship(cat1, cat2, allow_romantic, rel_edit_type=None, sabotage=False):
+    def edit_relationship(cat1, cat2, allow_romantic, rel_edit_type=None, decrease=False):
 
         # Gathering the relationships.
         if cat1.ID in cat2.relationships:
@@ -2828,9 +2828,6 @@ class Cat:
         # Are they mates?
         mates = rel1.cat_from.ID in rel1.cat_to.mate
 
-        rel_values = [v for v in [*RelType] if v != RelType.ROMANCE]
-        if allow_romantic and (mates or cat1.is_potential_mate(cat2)):
-            rel_values.append(RelType.ROMANCE)
 
         chosen_rel = rel_edit_type
 
@@ -2838,8 +2835,8 @@ class Cat:
         # Effects on traits
         for rel_edit_type in chosen_rel:
 
-            amount = 10  * (
-                -1 if sabotage else 1
+            amount = 5  * (
+                -1 if decrease else 1
             )
 
             setattr(rel1, chosen_rel, getattr(rel1, chosen_rel) + amount)
@@ -3444,7 +3441,7 @@ class Cat:
             and not check_cat.faded
         ]
 
-        # we're doing this separately so that we don't fuck up other clan cats and cats with no group
+        # we're doing this separately so that we don't mess up other clan cats and cats with no group
         if self.dead:
             sorted_specific_list = [
                 check_cat
