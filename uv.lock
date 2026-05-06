@@ -228,6 +228,7 @@ dependencies = [
     { name = "pydantic" },
     { name = "pygame-ce" },
     { name = "pygame-gui" },
+    { name = "pypresence" },
     { name = "requests" },
     { name = "strenum" },
     { name = "tomli" },
@@ -269,6 +270,7 @@ requires-dist = [
     { name = "pydantic", specifier = ">=2.12.0" },
     { name = "pygame-ce", specifier = "~=2.2" },
     { name = "pygame-gui", specifier = "~=0.6" },
+    { name = "pypresence", specifier = "==4.6.1" },
     { name = "pypresence", marker = "extra == 'discord'", specifier = "~=4.2" },
     { name = "requests", specifier = "~=2.28" },
     { name = "strenum", specifier = "~=0.4" },
@@ -1049,11 +1051,11 @@ wheels = [
 
 [[package]]
 name = "pypresence"
-version = "4.3.0"
+version = "4.6.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/f4/2e/d110f862720b5e3ba1b0b719657385fc4151929befa2c6981f48360aa480/pypresence-4.3.0.tar.gz", hash = "sha256:a6191a3af33a9667f2a4ef0185577c86b962ee70aa82643c472768a6fed1fbf3", size = 10696, upload-time = "2023-07-08T00:33:53.49Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f6/6b/dedacb949ee73c3fd4a11992a4e9a70fc4cd1046ed6870f9138348293ded/pypresence-4.6.1.tar.gz", hash = "sha256:05199516a3b4e182b637b3cd5415aab7ba542707664f634f35a7220c4f10334f", size = 20419, upload-time = "2025-10-17T18:53:39.484Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/1e/40/1d30b30e18f81eb71365681223971a9822a89b3d6ee5269dd2aa955bc228/pypresence-4.3.0-py2.py3-none-any.whl", hash = "sha256:af878c6d49315084f1b108aec86b31915080614d9421d6dd3a44737aba9ff13f", size = 11778, upload-time = "2023-07-08T00:33:52.018Z" },
+    { url = "https://files.pythonhosted.org/packages/bd/0d/1c817c6769ce0b64cc0dcc20bc9d0edb4dc560e83a3b5f0d5cbda04c3d35/pypresence-4.6.1-py3-none-any.whl", hash = "sha256:33d4549fcdf4102f81935df4ba587bacb22193e0c50c541d1ab9329b21df33cd", size = 14033, upload-time = "2025-10-17T18:53:38.184Z" },
 ]
 
 [[package]]
