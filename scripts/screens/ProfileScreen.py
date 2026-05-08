@@ -2053,6 +2053,14 @@ class ProfileScreen(Screens):
                 starting_height=2,
                 manager=MANAGER,
             )
+            self.relationship_editor_button = UISurfaceImageButton(
+                ui_scale(pygame.Rect((50, 594), (172, 36))),
+                "screens.profile.relationship_editor",
+                get_button_dict(ButtonStyles.LADDER_BOTTOM, (172, 36)),
+                object_id="@buttonstyles_ladder_bottom",
+                starting_height=2,
+                manager=MANAGER,
+            )
             self.update_disabled_buttons_and_text()
 
     def toggle_roles_tab(self):
