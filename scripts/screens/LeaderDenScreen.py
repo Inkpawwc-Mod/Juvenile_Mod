@@ -420,8 +420,8 @@ class LeaderDenScreen(Screens):
 
     def create_other_clan_selection_box(self):
         """
-        handles the creation of other_clan_selection_container
-        """
+                handles the creation of other_clan_selection_container
+                """
         self.other_clan_selection_container = (
             pygame_gui.elements.UIAutoResizingContainer(
                 ui_scale(pygame.Rect((66, 451), (50, 50))),
