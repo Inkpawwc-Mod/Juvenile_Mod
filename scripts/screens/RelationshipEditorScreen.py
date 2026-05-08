@@ -299,7 +299,6 @@ class RelationshipEditorScreen(Screens):
             ui_scale(pygame.Rect((50, 470), (700, 150))),
             get_box(BoxStyles.ROUNDED_BOX, (700, 150)),
         )
-        self.cat_bg.disable()
 
         self.show_dead_text = pygame_gui.elements.UITextBox(
             "screens.relationship.show_dead_checkbox",
