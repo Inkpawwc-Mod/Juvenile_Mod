@@ -2810,7 +2810,7 @@ class Cat:
                 )
 
     @staticmethod
-    def edit_relationship(cat1, cat2, allow_romantic, rel_edit_type=None, decrease=False):
+    def edit_relationship(cat1, cat2, allow_romantic, chosen_rel=None, decrease=False):
 
         # Gathering the relationships.
         if cat1.ID in cat2.relationships:
@@ -2823,26 +2823,13 @@ class Cat:
         else:
             rel2 = cat2.create_one_relationship(cat1)
 
-        # Output string.
-        output = ""
-
-        # determine the traits to effect
-        # Are they mates?
-        mates = rel1.cat_from.ID in rel1.cat_to.mate
-
-
-        chosen_rel = rel_edit_type
-
-        # Determine the number of traits to effect, and choose the traits
-        # Effects on traits
-        for rel_edit_type in chosen_rel:
-
-            amount = 5  * (
-                -1 if decrease else 1
+        # amount the chosen relationship type is increased or decreased by
+        amount = 10  * (
+            -1 if decrease else 1
             )
 
-            setattr(rel1, chosen_rel, getattr(rel1, chosen_rel) + amount)
-            setattr(rel2, chosen_rel, getattr(rel2, chosen_rel) + amount)
+        setattr(rel1, chosen_rel, getattr(rel1, chosen_rel) + amount)
+
 
     @staticmethod
     def mediate_relationship(mediator, cat1, cat2, allow_romantic, sabotage=False):
