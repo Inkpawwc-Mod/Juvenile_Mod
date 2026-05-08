@@ -316,7 +316,7 @@ class MakeClanScreen(Screens):
             else:
                 self.elements["reroll_count"].set_text(str(self.rolls_left))
             if self.rolls_left == 0:
-                event.ui_element.enable()
+                event.ui_element.disable()
             if constants.CONFIG["clan_creation"]["rerolls"] == -1:
                 event.ui_element.enable()
 
@@ -2150,8 +2150,6 @@ class MakeClanScreen(Screens):
     def save_clan(self):
         game.mediated.clear()
         game.patrolled.clear()
-        game.just_died.clear()
-        game.dead_cats_to_grieve.clear()
         save_load.faded_ids.clear()
         Cat.outside_cats.clear()
         Patrol.used_patrols.clear()

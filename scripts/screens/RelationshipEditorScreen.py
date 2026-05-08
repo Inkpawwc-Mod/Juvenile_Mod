@@ -34,8 +34,9 @@ from ..events_module.text_adjust import shorten_text_to_fit
 from ..ui.scale import ui_scale, ui_scale_dimensions
 from ..game_structure.screen_settings import MANAGER, screen
 from ..ui.generate_box import get_box, BoxStyles
-
-
+from ..ui.generate_button import get_button_dict, ButtonStyles
+from ..ui.icon import Icon
+from scripts.cat_relations.enums import RelType, RelTier, rel_type_tiers
 
 
 class RelationshipEditorScreen(Screens):
@@ -151,6 +152,7 @@ class RelationshipEditorScreen(Screens):
                     chosen_rel=RelType.RESPECT,
                     decrease=True
                 )
+                self.results.set_text(output)
                 self.update_selected_cats()
 
             elif event.ui_element == self.rel_change_inc["trust_increase"]:
@@ -234,8 +236,28 @@ class RelationshipEditorScreen(Screens):
     def screen_switches(self):
         super().screen_switches()
         self.show_mute_buttons()
+        # Gather the mediators:
+        self.mediators = []
+        for cat in Cat.all_cats_list:
+            if (
+                cat.status.rank.is_any_mediator_rank()
+                and cat.status.alive_in_player_clan
+            ):
+                self.mediators.append(cat)
 
         self.page = 1
+
+        if self.mediators:
+            if not switch_get_value(Switch.cat):
+                self.selected_mediator = 0
+            elif Cat.fetch_cat(switch_get_value(Switch.cat)) in self.mediators:
+                self.selected_mediator = self.mediators.index(
+                    Cat.fetch_cat(switch_get_value(Switch.cat))
+                )
+            else:
+                self.selected_mediator = 0
+        else:
+            self.selected_mediator = None
 
         self.back_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((25, 60), (105, 30))),
@@ -277,6 +299,7 @@ class RelationshipEditorScreen(Screens):
             ui_scale(pygame.Rect((50, 470), (700, 150))),
             get_box(BoxStyles.ROUNDED_BOX, (700, 150)),
         )
+        self.cat_bg.disable()
 
         self.show_dead_text = pygame_gui.elements.UITextBox(
             "screens.relationship.show_dead_checkbox",
@@ -288,6 +311,20 @@ class RelationshipEditorScreen(Screens):
         self.draw_info_block
         self.update_checkboxes()
 
+        self.increase_button = UISurfaceImageButton(
+            ui_scale(pygame.Rect((410, 350), (105, 40))),
+            "screens.relationship_editor.plus_icon_placeholder",
+            get_button_dict(ButtonStyles.SQUOVAL, (40, 40)),
+            object_id="@buttonstyles_squoval",
+            manager=MANAGER,
+        )
+        self.decrease_button = UISurfaceImageButton(
+            ui_scale(pygame.Rect((280, 350), (109, 40))),
+            "screens.relationship_editor.minus_icon_placeholder",
+            get_button_dict(ButtonStyles.SQUOVAL, (40, 40)),
+            object_id="@buttonstyles_squoval",
+            manager=MANAGER,
+        )
 
         self.next_page = UISurfaceImageButton(
             ui_scale(pygame.Rect((433, 619), (34, 34))),
@@ -388,6 +425,11 @@ class RelationshipEditorScreen(Screens):
             self.rel_change_dec[ele].kill()
         self.rel_change_dec = {}
 
+        if (
+            self.selected_mediator is not None
+        ):  # It can be zero, so we must test for not None here.
+            x_value = 315
+            mediator = self.mediators[self.selected_mediator]
 
         self.rel_type_buttons["rel_choices_frame"] = pygame_gui.elements.UIImage(
                 ui_scale(pygame.Rect((275, 80), (252, 252))),
@@ -535,6 +577,7 @@ class RelationshipEditorScreen(Screens):
                 container=self.rel_button_container,
             )
 
+        self.update_buttons()
         self.update_list_cats()
         self.update_selected_cats()
 
@@ -590,6 +633,7 @@ class RelationshipEditorScreen(Screens):
                             ui_scale(pygame.Rect((x, y), (50, 50))), _temp
                         )
                     )
+                    self.cat_buttons[-1].disable()
 
                 self.cat_buttons.append(
                     UISpriteButton(
@@ -937,6 +981,41 @@ class RelationshipEditorScreen(Screens):
 
         return output
 
+    def update_buttons(self):
+        error_message = ""
+
+        invalid_pair = False
+        if self.selected_cat_1 and self.selected_cat_2:
+            for x in game.mediated:
+                if self.selected_cat_1.ID in x and self.selected_cat_2.ID in x:
+                    invalid_pair = True
+                    error_message += i18n.t("screens.mediation.pair_already_mediated")
+                    break
+        else:
+            invalid_pair = True
+
+        self.error.set_text(error_message)
+
+        if invalid_pair:
+            self.increase_button.disable()
+            self.decrease_button.disable()
+        else:
+            self.increase_button.enable()
+            self.decrease_button.enable()
+
+        if self.romance_checkbox:
+            self.romance_checkbox.kill()
+
+        self.romance_checkbox = UIImageButton(
+            ui_scale(pygame.Rect((321, 390), (34, 34))),
+            "",
+            object_id=(
+                "@checked_checkbox" if self.allow_romance else "@unchecked_checkbox"
+            ),
+            tool_tip_text="screens.mediation.allow_romantic_tooltip",
+            manager=MANAGER,
+        )
+
     def update_search_cats(self, search_text):
         """Run this function when the search text changes, or when the screen is switched to."""
         self.current_listed_cats = []
@@ -1006,6 +1085,10 @@ class RelationshipEditorScreen(Screens):
         del self.selected_frame_2
         self.cat_bg.kill()
         del self.cat_bg
+        self.increase_button.kill()
+        del self.increase_button
+        self.decrease_button.kill()
+        del self.decrease_button
         self.deselect_1.kill()
         del self.deselect_1
         self.deselect_2.kill()
@@ -1020,6 +1103,11 @@ class RelationshipEditorScreen(Screens):
         del self.random1
         self.random2.kill()
         del self.random2
+        if self.romance_checkbox:
+            self.romance_checkbox.kill()
+            del self.romance_checkbox
+        self.romance_checkbox_text.kill()
+        del self.romance_checkbox_text
         self.error.kill()
         del self.error
         self.search_bar_image.kill()
