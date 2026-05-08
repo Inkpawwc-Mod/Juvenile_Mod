@@ -1568,7 +1568,6 @@ class MakeClanScreen(Screens):
         elif self.rolls_left == -1:
             self.elements["dice"].enable()
             if self.rolls_left == -1:
-                self.elements["dice"].enable()
                 self.elements["reroll_count"].hide()
             self.elements["roll1"].hide()
             self.elements["roll2"].hide()
@@ -2151,6 +2150,8 @@ class MakeClanScreen(Screens):
     def save_clan(self):
         game.mediated.clear()
         game.patrolled.clear()
+        game.just_died.clear()
+        game.dead_cats_to_grieve.clear()
         save_load.faded_ids.clear()
         Cat.outside_cats.clear()
         Patrol.used_patrols.clear()
