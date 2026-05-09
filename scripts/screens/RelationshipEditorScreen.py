@@ -928,13 +928,7 @@ class RelationshipEditorScreen(Screens):
                 },
             )
 
-            (
-                self.next_cat,
-                self.previous_cat,
-            ) = self.the_cat.determine_next_and_previous_cats()
 
-            # Disable and enable next and previous cat buttons as needed.
-            self.update_previous_next_cat_buttons()
 
     def selected_cat_list(self):
         output = []

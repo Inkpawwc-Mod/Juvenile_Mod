@@ -1,5 +1,6 @@
 import pygame
 import pygame_gui
+import i18n
 import ujson
 from pygame_gui.core import ObjectID
 
