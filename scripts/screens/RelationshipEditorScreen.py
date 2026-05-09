@@ -119,7 +119,7 @@ class RelationshipEditorScreen(Screens):
                     self.allow_romance,
                     chosen_rel=RelType.LIKE
                 )
-                self.update_both()
+                self.update_current_cat_info(reset_selected_cat=False)
 
             elif event.ui_element == self.rel_change_dec["like_decrease"]:
                 Cat.edit_relationship(
@@ -129,8 +129,7 @@ class RelationshipEditorScreen(Screens):
                     chosen_rel=RelType.LIKE,
                     decrease=True
                 )
-                self.update_both()
-
+                self.update_current_cat_info(reset_selected_cat=False)
 
             elif event.ui_element == self.rel_change_inc["respect_increase"]:
                 Cat.edit_relationship(
@@ -139,7 +138,7 @@ class RelationshipEditorScreen(Screens):
                     self.allow_romance,
                     chosen_rel=RelType.RESPECT
                 )
-                self.update_both()
+                self.update_current_cat_info(reset_selected_cat=False)
 
             elif event.ui_element == self.rel_change_dec["respect_decrease"]:
                 Cat.edit_relationship(
@@ -149,7 +148,7 @@ class RelationshipEditorScreen(Screens):
                     chosen_rel=RelType.RESPECT,
                     decrease=True
                 )
-                self.update_both()
+                self.update_current_cat_info(reset_selected_cat=False)
 
             elif event.ui_element == self.rel_change_inc["trust_increase"]:
                 Cat.edit_relationship(
@@ -158,7 +157,7 @@ class RelationshipEditorScreen(Screens):
                     self.allow_romance,
                     chosen_rel=RelType.TRUST
                 )
-                self.update_both()
+                self.update_current_cat_info(reset_selected_cat=False)
 
             elif event.ui_element == self.rel_change_dec["trust_decrease"]:
                 Cat.edit_relationship(
@@ -168,7 +167,7 @@ class RelationshipEditorScreen(Screens):
                     chosen_rel=RelType.TRUST,
                     decrease=True
                 )
-                self.update_both()
+                self.update_current_cat_info(reset_selected_cat=False)
 
 
             elif event.ui_element == self.rel_change_inc["comfort_increase"]:
@@ -178,7 +177,7 @@ class RelationshipEditorScreen(Screens):
                     self.allow_romance,
                     chosen_rel=RelType.COMFORT
                 )
-                self.update_both()
+                self.update_current_cat_info(reset_selected_cat=False)
 
             elif event.ui_element == self.rel_change_dec["comfort_decrease"]:
                 Cat.edit_relationship(
@@ -188,7 +187,7 @@ class RelationshipEditorScreen(Screens):
                     chosen_rel=RelType.COMFORT,
                     decrease=True
                 )
-                self.update_both()
+                self.update_current_cat_info(reset_selected_cat=False)
 
 
             elif event.ui_element == self.rel_change_inc["romance_increase"]:
@@ -198,7 +197,7 @@ class RelationshipEditorScreen(Screens):
                     self.allow_romance,
                     chosen_rel=RelType.ROMANCE
                 )
-                self.update_both()
+                self.update_current_cat_info(reset_selected_cat=False)
 
             elif event.ui_element == self.rel_change_dec["romance_decrease"]:
                 Cat.edit_relationship(
@@ -208,7 +207,7 @@ class RelationshipEditorScreen(Screens):
                     chosen_rel=RelType.ROMANCE,
                     decrease=True
                 )
-                self.update_both()
+                self.update_current_cat_info(reset_selected_cat=False)
 
             elif event.ui_element == self.random2:
                 self.selected_cat = self.random_cat()
@@ -227,7 +226,7 @@ class RelationshipEditorScreen(Screens):
                         self.the_cat = event.ui_element.return_cat_object()
                     else:
                         self.selected_cat = event.ui_element.return_cat_object()
-                    self.update_both()
+                    self.update_selected_cat()
 
     def screen_switches(self):
         super().screen_switches()
@@ -315,7 +314,7 @@ class RelationshipEditorScreen(Screens):
             object_id="#text_box_30_horizleft",
         )
 
-        self.update_both()
+
         self.update_checkboxes()
 
 
@@ -394,6 +393,7 @@ class RelationshipEditorScreen(Screens):
 
         self.update_list_cats()
         self.update_rel_choices()
+        self.update_current_cat_info()
 
     def random_cat(self):
         if self.selected_cat_list():
@@ -566,7 +566,8 @@ class RelationshipEditorScreen(Screens):
             )
 
         self.update_list_cats()
-        self.update_both()
+
+
 
     def update_list_cats(self):
         self.all_cats_list = [
@@ -683,10 +684,6 @@ class RelationshipEditorScreen(Screens):
             self.selected_cat_elements[ele].kill()
         self.selected_cat_elements = {}
 
-        # Page numbers
-        self.mates_page = 0
-        self.offspring_page = 0
-        self.potential_mates_page = 0
 
         heading_rect = ui_scale(pygame.Rect((0, 25), (400, -1)))
         self.current_cat_elements["heading"] = pygame_gui.elements.UITextBox(
@@ -729,10 +726,7 @@ class RelationshipEditorScreen(Screens):
         )
 
         info = self.the_cat.get_info_block()
-        if self.the_cat.mate:
-            info += f"\n{len(self.the_cat.mate)} " + i18n.t(
-                "general.mate", count=len(self.the_cat.mate)
-            )
+
         self.current_cat_elements["info"] = pygame_gui.elements.UITextBox(
             info,
             ui_scale(pygame.Rect((206, 175), (94, 100))),
@@ -742,11 +736,8 @@ class RelationshipEditorScreen(Screens):
 
         if reset_selected_cat:
             self.selected_cat = None
-            if self.the_cat.mate:
-                self.selected_cat = Cat.fetch_cat(self.the_cat.mate[0])
-            self.update_selected_cat()
+        self.update_selected_cat()
 
-        self.draw_info_block(self.the_cat, starting_pos=(50, 50))
 
     def update_selected_cat(self):
         """Updates all elements of the selected cat"""
@@ -823,29 +814,8 @@ class RelationshipEditorScreen(Screens):
                 object_id="@buttonstyles_squoval",
             )
 
-        if (
-            not get_clan_setting("same sex birth")
-            and self.the_cat.gender == self.selected_cat.gender
-        ):
-            warning_rect = ui_scale(pygame.Rect((0, 0), (160, 45)))
-            warning_rect.bottomleft = ui_scale_offset((0, -5))
-            self.selected_cat_elements[
-                "no kit warning"
-            ] = pygame_gui.elements.UITextBox(
-                "screens.choose_mate.no_kit_warning",
-                warning_rect,
-                object_id=get_text_box_theme(
-                    "#text_box_22_horizcenter_vertcenter_spacing_95"
-                ),
-                anchors={
-                    "centerx": "centerx",
-                    "bottom": "bottom",
-                    "bottom_target": self.toggle_mate,
-                },
-            )
-            del warning_rect
-
-        self.draw_info_block(self.selected_cat, starting_pos=(550, 50))
+        self.draw_info_block(self.the_cat, starting_pos=(50, 50))
+        self.draw_info_block(self.selected_cat, starting_pos=(550, 100))
 
     def update_both(self):
         """Updates both the current cat and selected cat info."""
@@ -873,6 +843,11 @@ class RelationshipEditorScreen(Screens):
     def draw_info_block(self, cat, starting_pos: tuple):
         if not cat:
             return
+
+        self.the_cat = Cat.all_cats[switch_get_value(Switch.cat)]
+        if not self.the_cat.inheritance:
+            self.the_cat.create_inheritance_new_cat()
+
 
         other_cat = [Cat.fetch_cat(i) for i in self.selected_cat_list() if i != cat.ID]
         if other_cat:
@@ -1127,7 +1102,6 @@ class RelationshipEditorScreen(Screens):
             # even if they somehow have some. They should not be able to get any, but it never hurts to check.
             if not check_age or related:
                 allow_romance = False
-                self.rel_type_box["romance"].disable()
                 self.rel_change_inc["romance_increase"].disable()
                 self.rel_change_dec["romance_decrease"].disable()
                 # Print, just for bug checking. Again, they should not be able to get love towards their relative.
@@ -1137,7 +1111,6 @@ class RelationshipEditorScreen(Screens):
                     )
             else:
                 allow_romance = True
-                self.rel_type_box["romance"].enable()
                 self.rel_change_inc["romance_increase"].enable()
                 self.rel_change_dec["romance_decrease"].enable()
 
@@ -1266,8 +1239,6 @@ class RelationshipEditorScreen(Screens):
         self.list_frame_image = None
 
         self.mates_cat_buttons = {}
-        self.offspring_cat_buttons = {}
-        self.potential_mates_buttons = {}
         self.checkboxes = {}
 
 
@@ -1279,7 +1250,6 @@ class RelationshipEditorScreen(Screens):
         self.info.kill()
         self.info = None
 
-        self.mate_page_display = None
 
 
     def on_use(self):
