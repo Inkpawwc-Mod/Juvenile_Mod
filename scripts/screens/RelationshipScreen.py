@@ -16,6 +16,7 @@ from scripts.screens.Screens import Screens
 from scripts.screens.enums import GameScreen
 from scripts.ui.theme import get_text_box_theme
 from scripts.events_module.text_adjust import shorten_text_to_fit
+
 from scripts.ui.scale import (
     ui_scale,
     ui_scale_dimensions,
@@ -28,7 +29,11 @@ from scripts.ui.generate_box import get_box, BoxStyles
 from scripts.ui.generate_button import get_button_dict, ButtonStyles
 from scripts.ui.icon import Icon
 
-from scripts.clan_package.settings import switch_clan_setting
+from scripts.clan_package.settings import (
+    get_clan_setting,
+    set_clan_setting,
+    switch_clan_setting,
+)
 from scripts.game_structure.game.switches import (
     switch_set_value,
     Switch,
