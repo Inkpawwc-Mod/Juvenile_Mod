@@ -31,7 +31,7 @@ from .enums import GameScreen
 
 from ..ui.theme import get_text_box_theme
 from ..events_module.text_adjust import shorten_text_to_fit
-from ..ui.scale import ui_scale, ui_scale_dimensions
+from ..ui.scale import ui_scale, ui_scale_dimensions, ui_scale_offset
 from ..game_structure.screen_settings import MANAGER, screen
 from ..ui.generate_box import get_box, BoxStyles
 
@@ -45,13 +45,18 @@ class RelationshipEditorScreen(Screens):
         self.the_cat = None
         self.back_button = None
 
+        self.current_cat_elements = {}
+        self.selected_cat_elements = {}
+
+        self.info = None
+
         self.previous_cat_button = None
         self.next_cat_button = None
         self.conditions_background = None
         self.previous_cat = None
         self.next_cat = None
-        self.selected_cat_1 = None
-        self.selected_cat_2 = None
+        self.the_cat = None
+        self.selected_cat = None
         self.search_bar = None
         self.search_bar_image = None
         self.checkboxes = {}
@@ -65,8 +70,6 @@ class RelationshipEditorScreen(Screens):
         self.page = 1
         self.all_pages = 1
         self.sprite_buttons = {}
-        self.focus_cat_elements = {}
-        self.selected_cat_elements = {}
         self.relation_list_elements = {}
         self.allow_romance = True
         self.current_listed_cats = None
@@ -83,22 +86,17 @@ class RelationshipEditorScreen(Screens):
                 self.change_screen(game.last_screen_forupdate)
             elif event.ui_element == self.previous_cat_button:
                 if isinstance(Cat.fetch_cat(self.previous_cat), Cat):
-                    self.clear_profile()
                     switch_set_value(Switch.cat, self.previous_cat)
-                    self.build_profile()
-                    self.update_disabled_buttons_and_text()
-
+                    self.update_current_cat_info()
                 else:
                     print("invalid previous cat", self.previous_cat)
             elif event.ui_element == self.next_cat_button:
                 if isinstance(Cat.fetch_cat(self.next_cat), Cat):
-                    self.clear_profile()
                     switch_set_value(Switch.cat, self.next_cat)
-                    self.build_profile()
-                    self.update_disabled_buttons_and_text()
-                    self.update_selected_cats()
+                    self.update_current_cat_info()
                 else:
-                    print("invalid next cat", self.previous_cat)
+                    print("invalid next cat", self.next_cat)
+
             elif event.ui_element == self.next_page:
                 self.page += 1
                 self.update_page()
@@ -110,132 +108,165 @@ class RelationshipEditorScreen(Screens):
                 self.update_checkboxes()
                 self.apply_cat_filter()
             elif event.ui_element == self.deselect_2:
-                self.selected_cat_2 = None
-                self.update_selected_cats()
+                self.selected_cat = None
+                self.update_selected_cat()
 
 
             elif event.ui_element == self.rel_change_inc["like_increase"]:
                 Cat.edit_relationship(
-                    self.selected_cat_1,
-                    self.selected_cat_2,
+                    self.the_cat,
+                    self.selected_cat,
                     self.allow_romance,
                     chosen_rel=RelType.LIKE
                 )
-                self.update_selected_cats()
+                self.update_both()
 
             elif event.ui_element == self.rel_change_dec["like_decrease"]:
                 Cat.edit_relationship(
-                    self.selected_cat_1,
-                    self.selected_cat_2,
+                    self.the_cat,
+                    self.selected_cat,
                     self.allow_romance,
                     chosen_rel=RelType.LIKE,
                     decrease=True
                 )
-                self.update_selected_cats()
+                self.update_both()
 
 
             elif event.ui_element == self.rel_change_inc["respect_increase"]:
                 Cat.edit_relationship(
-                    self.selected_cat_1,
-                    self.selected_cat_2,
+                    self.the_cat,
+                    self.selected_cat,
                     self.allow_romance,
                     chosen_rel=RelType.RESPECT
                 )
-                self.update_selected_cats()
+                self.update_both()
 
             elif event.ui_element == self.rel_change_dec["respect_decrease"]:
                 Cat.edit_relationship(
-                    self.selected_cat_1,
-                    self.selected_cat_2,
+                    self.the_cat,
+                    self.selected_cat,
                     self.allow_romance,
                     chosen_rel=RelType.RESPECT,
                     decrease=True
                 )
-                self.update_selected_cats()
+                self.update_both()
 
             elif event.ui_element == self.rel_change_inc["trust_increase"]:
                 Cat.edit_relationship(
-                    self.selected_cat_1,
-                    self.selected_cat_2,
+                    self.the_cat,
+                    self.selected_cat,
                     self.allow_romance,
                     chosen_rel=RelType.TRUST
                 )
-                self.update_selected_cats()
+                self.update_both()
 
             elif event.ui_element == self.rel_change_dec["trust_decrease"]:
                 Cat.edit_relationship(
-                    self.selected_cat_1,
-                    self.selected_cat_2,
+                    self.the_cat,
+                    self.selected_cat,
                     self.allow_romance,
                     chosen_rel=RelType.TRUST,
                     decrease=True
                 )
-                self.update_selected_cats()
+                self.update_both()
 
 
             elif event.ui_element == self.rel_change_inc["comfort_increase"]:
                 Cat.edit_relationship(
-                    self.selected_cat_1,
-                    self.selected_cat_2,
+                    self.the_cat,
+                    self.selected_cat,
                     self.allow_romance,
                     chosen_rel=RelType.COMFORT
                 )
-                self.update_selected_cats()
+                self.update_both()
 
             elif event.ui_element == self.rel_change_dec["comfort_decrease"]:
                 Cat.edit_relationship(
-                    self.selected_cat_1,
-                    self.selected_cat_2,
+                    self.the_cat,
+                    self.selected_cat,
                     self.allow_romance,
                     chosen_rel=RelType.COMFORT,
                     decrease=True
                 )
-                self.update_selected_cats()
+                self.update_both()
 
 
             elif event.ui_element == self.rel_change_inc["romance_increase"]:
                 Cat.edit_relationship(
-                    self.selected_cat_1,
-                    self.selected_cat_2,
+                    self.the_cat,
+                    self.selected_cat,
                     self.allow_romance,
                     chosen_rel=RelType.ROMANCE
                 )
-                self.update_selected_cats()
+                self.update_both()
 
             elif event.ui_element == self.rel_change_dec["romance_decrease"]:
                 Cat.edit_relationship(
-                    self.selected_cat_1,
-                    self.selected_cat_2,
+                    self.the_cat,
+                    self.selected_cat,
                     self.allow_romance,
                     chosen_rel=RelType.ROMANCE,
                     decrease=True
                 )
-                self.update_selected_cats()
+                self.update_both()
 
             elif event.ui_element == self.random2:
-                self.selected_cat_2 = self.random_cat()
+                self.selected_cat = self.random_cat()
                 if pygame.key.get_mods() & pygame.KMOD_SHIFT:
-                    self.selected_cat_1 = self.random_cat()
-                self.update_selected_cats()
+                    self.the_cat = self.random_cat()
+                self.update_both()
             elif event.ui_element in self.cat_buttons:
                 if event.ui_element.return_cat_object() not in (
-                    self.selected_cat_1,
-                    self.selected_cat_2,
+                    self.the_cat,
+                    self.selected_cat,
                 ):
                     if (
                         pygame.key.get_mods() & pygame.KMOD_SHIFT
-                        or not self.selected_cat_1
+                        or not self.the_cat
                     ):
-                        self.selected_cat_1 = event.ui_element.return_cat_object()
+                        self.the_cat = event.ui_element.return_cat_object()
                     else:
-                        self.selected_cat_2 = event.ui_element.return_cat_object()
-                    self.update_selected_cats()
+                        self.selected_cat = event.ui_element.return_cat_object()
+                    self.update_both()
 
     def screen_switches(self):
         super().screen_switches()
         self.show_mute_buttons()
 
         self.page = 1
+
+        self.list_frame_image = pygame_gui.elements.UIImage(
+            ui_scale(pygame.Rect((0, 391), (650, 194))),
+            get_box(BoxStyles.ROUNDED_BOX, (650, 194)),
+            manager=MANAGER,
+            anchors={"centerx": "centerx"},
+        )
+
+        self.info = pygame_gui.elements.UITextBox(
+            "screens.choose_mate.info",
+            ui_scale(pygame.Rect((0, 5), (375, 100))),
+            object_id=get_text_box_theme("#text_box_22_horizcenter_spacing_95"),
+            anchors={"centerx": "centerx"},
+        )
+
+        self.the_cat_frame = pygame_gui.elements.UIImage(
+            ui_scale(pygame.Rect((40, 113), (266, 197))),
+            pygame.transform.scale(
+                image_cache.load_image(
+                    "resources/images/choosing_cat1_frame_mate.png"
+                ).convert_alpha(),
+                ui_scale_dimensions((266, 197)),
+            ),
+        )
+        self.mate_frame = pygame_gui.elements.UIImage(
+            ui_scale(pygame.Rect((494, 113), (266, 197))),
+            pygame.transform.scale(
+                image_cache.load_image(
+                    "resources/images/choosing_cat2_frame_mate.png"
+                ).convert_alpha(),
+                ui_scale_dimensions((266, 197)),
+            ),
+        )
 
         self.back_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((25, 60), (105, 30))),
@@ -284,8 +315,7 @@ class RelationshipEditorScreen(Screens):
             object_id="#text_box_30_horizleft",
         )
 
-        self.update_selected_cats()
-        self.draw_info_block
+        self.update_both()
         self.update_checkboxes()
 
 
@@ -536,7 +566,7 @@ class RelationshipEditorScreen(Screens):
             )
 
         self.update_list_cats()
-        self.update_selected_cats()
+        self.update_both()
 
     def update_list_cats(self):
         self.all_cats_list = [
@@ -618,15 +648,212 @@ class RelationshipEditorScreen(Screens):
             ),
         )
 
-    def update_selected_cats(self):
+    def update_current_cat_info(self, reset_selected_cat=True):
+        """Updates all elements with the current cat, as well as the selected cat.
+        Called when the screen switched, and whenever the focused cat is switched"""
+        self.the_cat = Cat.all_cats[switch_get_value(Switch.cat)]
+        if not self.the_cat.inheritance:
+            self.the_cat.create_inheritance_new_cat()
+
+        (
+            self.next_cat,
+            self.previous_cat,
+        ) = self.the_cat.determine_next_and_previous_cats(
+            filter_func=(
+                lambda cat: cat.age
+                in ("young adult", "adult", "senior adult", "senior")
+            )
+        )
+        (
+            self.next_cat_button.disable()
+            if self.next_cat == 0
+            else self.next_cat_button.enable()
+        )
+        (
+            self.previous_cat_button.disable()
+            if self.previous_cat == 0
+            else self.previous_cat_button.enable()
+        )
+
+        for ele in self.current_cat_elements:
+            self.current_cat_elements[ele].kill()
+        self.current_cat_elements = {}
+
         for ele in self.selected_cat_elements:
             self.selected_cat_elements[ele].kill()
         self.selected_cat_elements = {}
 
+        # Page numbers
+        self.mates_page = 0
+        self.offspring_page = 0
+        self.potential_mates_page = 0
+
+        heading_rect = ui_scale(pygame.Rect((0, 25), (400, -1)))
+        self.current_cat_elements["heading"] = pygame_gui.elements.UITextBox(
+            "screens.choose_mate.heading",
+            heading_rect,
+            object_id=get_text_box_theme("#text_box_34_horizcenter"),
+            anchors={
+                "centerx": "centerx",
+            },
+            text_kwargs={
+                "name": shorten_text_to_fit(str(self.the_cat.name), 500, 18),
+                "m_c": self.the_cat,
+            },
+        )
+
+        self.info.set_anchors(
+            {"centerx": "centerx", "top_target": self.current_cat_elements["heading"]}
+        )
+        self.info.set_relative_position((0, 10))
+
+        self.current_cat_elements["heading"].line_spacing = 0.95
+        self.current_cat_elements["heading"].redraw_from_chunks()
+
+        del heading_rect
+
+        self.current_cat_elements["image"] = pygame_gui.elements.UIImage(
+            ui_scale(pygame.Rect((50, 150), (150, 150))),
+            pygame.transform.scale(
+                self.the_cat.sprite, ui_scale_dimensions((150, 150))
+            ),
+        )
+        name = str(self.the_cat.name)  # get name
+        if 11 <= len(name):  # check name length
+            short_name = str(name)[0:9]
+            name = short_name + "..."
+        self.current_cat_elements["name"] = pygame_gui.elements.ui_label.UILabel(
+            ui_scale(pygame.Rect((65, 115), (120, 30))),
+            name,
+            object_id="#text_box_34_horizcenter",
+        )
+
+        info = self.the_cat.get_info_block()
+        if self.the_cat.mate:
+            info += f"\n{len(self.the_cat.mate)} " + i18n.t(
+                "general.mate", count=len(self.the_cat.mate)
+            )
+        self.current_cat_elements["info"] = pygame_gui.elements.UITextBox(
+            info,
+            ui_scale(pygame.Rect((206, 175), (94, 100))),
+            object_id="#text_box_22_horizcenter_vertcenter_spacing_95",
+            manager=MANAGER,
+        )
+
+        if reset_selected_cat:
+            self.selected_cat = None
+            if self.the_cat.mate:
+                self.selected_cat = Cat.fetch_cat(self.the_cat.mate[0])
+            self.update_selected_cat()
+
+        self.draw_info_block(self.the_cat, starting_pos=(50, 50))
+
+    def update_selected_cat(self):
+        """Updates all elements of the selected cat"""
+
+        for ele in self.selected_cat_elements:
+            self.selected_cat_elements[ele].kill()
+        self.selected_cat_elements = {}
+
+        if not isinstance(self.selected_cat, Cat):
+            self.selected_cat = None
+            return
 
 
-        self.draw_info_block(self.selected_cat_1, (50, 80))
-        self.draw_info_block(self.selected_cat_2, (550, 80))
+        self.selected_cat_elements["center_heart"] = pygame_gui.elements.UIImage(
+            ui_scale(pygame.Rect((0, 188), (200, 78))),
+            pygame.transform.scale(
+                image_cache.load_image(
+                    "resources/images/heart_mates.png"
+                    if self.selected_cat.ID in self.the_cat.mate
+                    else (
+                        "resources/images/heart_breakup.png"
+                        if self.selected_cat.ID in self.the_cat.previous_mates
+                        else "resources/images/heart_maybe.png"
+                    )
+                ).convert_alpha(),
+                ui_scale_dimensions((200, 78)),
+            ),
+            anchors={"centerx": "centerx"},
+        )
+
+        self.selected_cat_elements["image"] = pygame_gui.elements.UIImage(
+            ui_scale(pygame.Rect((600, 150), (150, 150))),
+            pygame.transform.scale(
+                self.selected_cat.sprite, ui_scale_dimensions((150, 150))
+            ),
+        )
+
+        name = str(self.selected_cat.name)
+        if 11 <= len(name):  # check name length
+            short_name = str(name)[0:9]
+            name = short_name + "..."
+        self.selected_cat_elements["name"] = pygame_gui.elements.ui_label.UILabel(
+            ui_scale(pygame.Rect((620, 115), (110, 30))),
+            name,
+            object_id="#text_box_34_horizcenter",
+        )
+
+        info = self.selected_cat.get_info_block()
+        if self.selected_cat.mate:
+            info += f"\n{len(self.selected_cat.mate)} " + i18n.t(
+                "general.mate", count=len(self.selected_cat.mate)
+            )
+
+        self.selected_cat_elements["info"] = pygame_gui.elements.UITextBox(
+            info,
+            ui_scale(pygame.Rect((500, 175), (94, 100))),
+            object_id="#text_box_22_horizcenter_vertcenter_spacing_95",
+            manager=MANAGER,
+        )
+
+
+        if self.selected_cat.ID in self.the_cat.mate:
+            self.toggle_mate = UISurfaceImageButton(
+                ui_scale(pygame.Rect((323, 310), (153, 30))),
+                "screens.choose_mate.unset_mate",
+                get_button_dict(ButtonStyles.SQUOVAL, (153, 30)),
+                object_id="@buttonstyles_squoval",
+            )
+        else:
+            self.toggle_mate = UISurfaceImageButton(
+                ui_scale(pygame.Rect((323, 310), (153, 30))),
+                "screens.choose_mate.set_mate",
+                get_button_dict(ButtonStyles.SQUOVAL, (153, 30)),
+                object_id="@buttonstyles_squoval",
+            )
+
+        if (
+            not get_clan_setting("same sex birth")
+            and self.the_cat.gender == self.selected_cat.gender
+        ):
+            warning_rect = ui_scale(pygame.Rect((0, 0), (160, 45)))
+            warning_rect.bottomleft = ui_scale_offset((0, -5))
+            self.selected_cat_elements[
+                "no kit warning"
+            ] = pygame_gui.elements.UITextBox(
+                "screens.choose_mate.no_kit_warning",
+                warning_rect,
+                object_id=get_text_box_theme(
+                    "#text_box_22_horizcenter_vertcenter_spacing_95"
+                ),
+                anchors={
+                    "centerx": "centerx",
+                    "bottom": "bottom",
+                    "bottom_target": self.toggle_mate,
+                },
+            )
+            del warning_rect
+
+        self.draw_info_block(self.selected_cat, starting_pos=(550, 50))
+
+    def update_both(self):
+        """Updates both the current cat and selected cat info."""
+
+        self.update_current_cat_info(
+            reset_selected_cat=False
+        )  # This will also refresh tab contents
+        self.update_selected_cat()
 
     def apply_cat_filter(self, search_text=""):
         # Filter for dead or empty cats
@@ -646,10 +873,6 @@ class RelationshipEditorScreen(Screens):
     def draw_info_block(self, cat, starting_pos: tuple):
         if not cat:
             return
-
-        self.selected_cat_1 = Cat.all_cats.get(
-            switch_get_value(Switch.cat), game.clan.instructor
-        )
 
         other_cat = [Cat.fetch_cat(i) for i in self.selected_cat_list() if i != cat.ID]
         if other_cat:
@@ -867,12 +1090,12 @@ class RelationshipEditorScreen(Screens):
         # Keep a list of all the relations
         if constants.CONFIG["sorting"]["sort_by_rel_total"]:
             self.all_relations = sorted(
-                self.selected_cat_1.relationships.values(),
+                self.the_cat.relationships.values(),
                 key=lambda x: x.total_abs_relationship_value,
                 reverse=True,
             )
         else:
-            self.all_relations = list(self.selected_cat_1.relationships.values()).copy()
+            self.all_relations = list(self.the_cat.relationships.values()).copy()
 
         if other_cat:
             name = str(cat.name)
@@ -932,10 +1155,10 @@ class RelationshipEditorScreen(Screens):
 
     def selected_cat_list(self):
         output = []
-        if self.selected_cat_1:
-            output.append(self.selected_cat_1.ID)
-        if self.selected_cat_2:
-            output.append(self.selected_cat_2.ID)
+        if self.the_cat:
+            output.append(self.the_cat.ID)
+        if self.selected_cat:
+            output.append(self.selected_cat.ID)
 
         return output
 
@@ -963,8 +1186,8 @@ class RelationshipEditorScreen(Screens):
         self.apply_cat_filter()
 
     def exit_screen(self):
-        self.selected_cat_1 = None
-        self.selected_cat_2 = None
+        self.the_cat = None
+        self.selected_cat = None
 
         for ele in self.checkboxes:
             self.checkboxes[ele].kill()
@@ -1028,6 +1251,35 @@ class RelationshipEditorScreen(Screens):
         del self.search_bar_image
         self.search_bar.kill()
         del self.search_bar
+
+        for ele in self.current_cat_elements:
+            self.current_cat_elements[ele].kill()
+        self.current_cat_elements = {}
+
+        for ele in self.selected_cat_elements:
+            self.selected_cat_elements[ele].kill()
+        self.selected_cat_elements = {}
+
+
+
+        self.list_frame_image.kill()
+        self.list_frame_image = None
+
+        self.mates_cat_buttons = {}
+        self.offspring_cat_buttons = {}
+        self.potential_mates_buttons = {}
+        self.checkboxes = {}
+
+
+
+        self.the_cat_frame.kill()
+        self.the_cat_frame = None
+        self.mate_frame.kill()
+        self.mate_frame = None
+        self.info.kill()
+        self.info = None
+
+        self.mate_page_display = None
 
 
     def on_use(self):
