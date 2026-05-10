@@ -293,6 +293,7 @@ class RelationshipEditorScreen(Screens):
             ui_scale(pygame.Rect((50, 470), (700, 150))),
             get_box(BoxStyles.ROUNDED_BOX, (700, 150)),
         )
+        self.cat_list_frame.disable()
 
         self.show_dead_text = pygame_gui.elements.UITextBox(
             "screens.relationship.show_dead_checkbox",
@@ -320,12 +321,6 @@ class RelationshipEditorScreen(Screens):
             manager=MANAGER,
         )
 
-        self.results = pygame_gui.elements.UITextBox(
-            "",
-            ui_scale(pygame.Rect((280, 385), (229, 100))),
-            object_id=get_text_box_theme("#text_box_22_horizcenter_spacing_95"),
-            manager=MANAGER,
-        )
 
         self.error = pygame_gui.elements.UITextBox(
             "",
@@ -720,6 +715,7 @@ class RelationshipEditorScreen(Screens):
             short_name,
             object_id="#text_box_30_horizcenter",
         )
+        self.selected_cat_elements["name" + tag].disable()
 
         # Gender
         if cat.genderalign == "female":
@@ -811,21 +807,21 @@ class RelationshipEditorScreen(Screens):
         if len(cat.mate) > 0:
             col2 = i18n.t("general.has_a_mate")
             t = i18n.t(f"{cat.skills.skill_string(short=True)}")
-            if len(t) > 11:
-                col2 += "\n" + t[:10] + "..."
+            if len(t) > 15:
+                col2 += "\n" + t[:12] + "..."
             else:
                 col2 += "\n" + t
         else:
             col2 = i18n.t("general.mate_none")
             t = i18n.t(f"{cat.skills.skill_string(short=True)}")
-            if len(t) > 11:
-                col2 += "\n" + t[:10] + "..."
+            if len(t) > 15:
+                col2 += "\n" + t[:12] + "..."
             else:
                 col2 += "\n" + t
 
         self.selected_cat_elements["col2" + tag] = pygame_gui.elements.UITextBox(
             col2,
-            ui_scale(pygame.Rect((x + 110, y + 126), (80, -1))),
+            ui_scale(pygame.Rect((x + 110, y + 126), (100, -1))),
             object_id="#text_box_22_horizleft_spacing_95",
             manager=MANAGER,
         )
@@ -1079,8 +1075,6 @@ class RelationshipEditorScreen(Screens):
         del self.next_page
         self.previous_page.kill()
         del self.previous_page
-        self.results.kill()
-        del self.results
         self.randomize_selected.kill()
         del self.randomize_selected
         self.error.kill()

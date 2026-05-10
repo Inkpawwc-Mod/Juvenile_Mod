@@ -247,6 +247,8 @@ class ProfileScreen(Screens):
                 self.change_screen(GameScreen.CHOOSE_ADOPTIVE_PARENT)
             elif event.ui_element == self.relationship_editor_button:
                 self.change_screen(GameScreen.RELATIONSHIP_EDITOR)
+                self.update_disabled_buttons_and_text()
+
 
         # Roles Tab
         elif self.open_tab == "roles":
