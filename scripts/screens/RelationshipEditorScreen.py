@@ -34,6 +34,7 @@ from ..events_module.text_adjust import shorten_text_to_fit
 from ..ui.scale import ui_scale, ui_scale_dimensions, ui_scale_offset
 from ..game_structure.screen_settings import MANAGER, screen
 from ..ui.generate_box import get_box, BoxStyles
+from ..ui.elements.text_box_tweaked import UITextBoxTweaked
 
 
 
@@ -88,12 +89,14 @@ class RelationshipEditorScreen(Screens):
                 if isinstance(Cat.fetch_cat(self.previous_cat), Cat):
                     switch_set_value(Switch.cat, self.previous_cat)
                     self.update_current_cat_info()
+                    self.draw_info_block(self.the_cat, starting_pos=(50, 100))
                 else:
                     print("invalid previous cat", self.previous_cat)
             elif event.ui_element == self.next_cat_button:
                 if isinstance(Cat.fetch_cat(self.next_cat), Cat):
                     switch_set_value(Switch.cat, self.next_cat)
                     self.update_current_cat_info()
+                    self.draw_info_block(self.the_cat, starting_pos=(50, 100))
                 else:
                     print("invalid next cat", self.next_cat)
 
@@ -107,7 +110,7 @@ class RelationshipEditorScreen(Screens):
                 switch_clan_setting("show dead relation")
                 self.update_checkboxes()
                 self.apply_cat_filter()
-            elif event.ui_element == self.deselect_2:
+            elif event.ui_element == self.remove_cat:
                 self.selected_cat = None
                 self.update_selected_cat()
 
@@ -234,39 +237,6 @@ class RelationshipEditorScreen(Screens):
 
         self.page = 1
 
-        self.list_frame_image = pygame_gui.elements.UIImage(
-            ui_scale(pygame.Rect((0, 391), (650, 194))),
-            get_box(BoxStyles.ROUNDED_BOX, (650, 194)),
-            manager=MANAGER,
-            anchors={"centerx": "centerx"},
-        )
-
-        self.info = pygame_gui.elements.UITextBox(
-            "screens.choose_mate.info",
-            ui_scale(pygame.Rect((0, 5), (375, 100))),
-            object_id=get_text_box_theme("#text_box_22_horizcenter_spacing_95"),
-            anchors={"centerx": "centerx"},
-        )
-
-        self.the_cat_frame = pygame_gui.elements.UIImage(
-            ui_scale(pygame.Rect((40, 113), (266, 197))),
-            pygame.transform.scale(
-                image_cache.load_image(
-                    "resources/images/choosing_cat1_frame_mate.png"
-                ).convert_alpha(),
-                ui_scale_dimensions((266, 197)),
-            ),
-        )
-        self.mate_frame = pygame_gui.elements.UIImage(
-            ui_scale(pygame.Rect((494, 113), (266, 197))),
-            pygame.transform.scale(
-                image_cache.load_image(
-                    "resources/images/choosing_cat2_frame_mate.png"
-                ).convert_alpha(),
-                ui_scale_dimensions((266, 197)),
-            ),
-        )
-
         self.back_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((25, 60), (105, 30))),
             "buttons.back",
@@ -292,16 +262,14 @@ class RelationshipEditorScreen(Screens):
             manager=MANAGER,
         )
 
-        self.selected_frame_1 = pygame_gui.elements.UIImage(
-            ui_scale(pygame.Rect((50, 80), (200, 350))),
+        self.the_cat_frame = pygame_gui.elements.UIImage(
+            ui_scale(pygame.Rect((50, 95), (200, 370))),
             get_box(BoxStyles.ROUNDED_BOX, (200, 350)),
         )
-        self.selected_frame_1.disable()
-        self.selected_frame_2 = pygame_gui.elements.UIImage(
-            ui_scale(pygame.Rect((550, 80), (200, 350))),
+        self.selected_cat_frame = pygame_gui.elements.UIImage(
+            ui_scale(pygame.Rect((550, 100), (200, 350))),
             get_box(BoxStyles.ROUNDED_BOX, (200, 350)),
         )
-        self.selected_frame_2.disable()
 
         self.cat_bg = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((50, 470), (700, 150))),
@@ -333,14 +301,7 @@ class RelationshipEditorScreen(Screens):
             manager=MANAGER,
         )
 
-        self.deselect_1 = UISurfaceImageButton(
-            ui_scale(pygame.Rect((68, 434), (127, 30))),
-            "buttons.remove_cat",
-            get_button_dict(ButtonStyles.SQUOVAL, (127, 30)),
-            object_id="@buttonstyles_squoval",
-            manager=MANAGER,
-        )
-        self.deselect_2 = UISurfaceImageButton(
+        self.remove_cat = UISurfaceImageButton(
             ui_scale(pygame.Rect((605, 434), (127, 30))),
             "buttons.remove_cat",
             get_button_dict(ButtonStyles.SQUOVAL, (127, 30)),
@@ -362,14 +323,6 @@ class RelationshipEditorScreen(Screens):
             manager=MANAGER,
         )
 
-        self.random1 = UISurfaceImageButton(
-            ui_scale(pygame.Rect((198, 432), (34, 34))),
-            Icon.DICE,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
-            object_id="@buttonstyles_icon",
-            manager=MANAGER,
-            sound_id="dice_roll",
-        )
         self.random2 = UISurfaceImageButton(
             ui_scale(pygame.Rect((568, 432), (34, 34))),
             Icon.DICE,
@@ -393,7 +346,8 @@ class RelationshipEditorScreen(Screens):
 
         self.update_list_cats()
         self.update_rel_choices()
-        self.update_current_cat_info()
+        self.update_both()
+        self.draw_info_block(self.the_cat, starting_pos=(50, 100))
 
     def random_cat(self):
         if self.selected_cat_list():
@@ -455,119 +409,123 @@ class RelationshipEditorScreen(Screens):
             )
 
         self.rel_type_box["respect"] = UISurfaceImageButton(
-            ui_scale(pygame.Rect((63, 72), (126, 36))),
+            ui_scale(pygame.Rect((63, 0), (126, 36))),
             "Respect",
             {"normal": get_button_dict(ButtonStyles.MENU_MIDDLE, (126, 36))["normal"]},
             object_id="@buttonstyles_menu_middle",
             container=self.rel_button_container,
             manager=MANAGER,
+            anchors={"top_target": self.rel_type_box["like"]}
         )
         self.rel_change_inc["respect_increase"] = UISurfaceImageButton(
-                ui_scale(pygame.Rect((124, 72), (48, 36))),
+                ui_scale(pygame.Rect((124, 0), (48, 36))),
                 "screens.relationship_editor.plus_icon_placeholder",
                 get_button_dict(ButtonStyles.PROFILE_RIGHT, (48, 36)),
                 object_id="@buttonstyles_profile_right",
                 manager=MANAGER,
-                anchors={"right": "right", "right_target": self.rel_type_box["respect"]},
+                anchors={"right": "right", "right_target": self.rel_type_box["respect"], "top_target": self.rel_type_box["like"]},
                 container=self.rel_button_container,
             )
         self.rel_change_dec["respect_decrease"] = UISurfaceImageButton(
-                ui_scale(pygame.Rect((-171,72), (48, 36))),
+                ui_scale(pygame.Rect((-171,0), (48, 36))),
                 "screens.relationship_editor.minus_icon_placeholder",
                 get_button_dict(ButtonStyles.PROFILE_LEFT, (48, 36)),
                 object_id="@buttonstyles_profile_left",
                 manager=MANAGER,
-                anchors={"left": "left", "left_target": self.rel_type_box["respect"]},
+                anchors={"left": "left", "left_target": self.rel_type_box["respect"], "top_target": self.rel_type_box["like"]},
                 container=self.rel_button_container,
             )
 
 
         self.rel_type_box["trust"] = UISurfaceImageButton(
-            ui_scale(pygame.Rect((63, 108), (126, 36))),
+            ui_scale(pygame.Rect((63, 0), (126, 36))),
             "Trust",
             {"normal": get_button_dict(ButtonStyles.MENU_MIDDLE, (126, 36))["normal"]},
             object_id="@buttonstyles_menu_middle",
             container=self.rel_button_container,
             manager=MANAGER,
+            anchors={"top_target": self.rel_type_box["respect"]}
         )
         self.rel_change_inc["trust_increase"] = UISurfaceImageButton(
-                ui_scale(pygame.Rect((124, 108), (48, 36))),
+                ui_scale(pygame.Rect((124, 0), (48, 36))),
                 "screens.relationship_editor.plus_icon_placeholder",
                 get_button_dict(ButtonStyles.PROFILE_RIGHT, (48, 36)),
                 object_id="@buttonstyles_profile_right",
                 manager=MANAGER,
-                anchors={"right": "right", "right_target": self.rel_type_box["trust"]},
+                anchors={"right": "right", "right_target": self.rel_type_box["trust"], "top_target": self.rel_type_box["respect"]},
                 container=self.rel_button_container,
             )
         self.rel_change_dec["trust_decrease"] = UISurfaceImageButton(
-                ui_scale(pygame.Rect((-171,108), (48, 36))),
+                ui_scale(pygame.Rect((-171,0), (48, 36))),
                 "screens.relationship_editor.minus_icon_placeholder",
                 get_button_dict(ButtonStyles.PROFILE_LEFT, (48, 36)),
                 object_id="@buttonstyles_profile_left",
                 manager=MANAGER,
-                anchors={"left": "left", "left_target": self.rel_type_box["trust"]},
+                anchors={"left": "left", "left_target": self.rel_type_box["trust"], "top_target": self.rel_type_box["respect"]},
                 container=self.rel_button_container,
             )
 
 
         self.rel_type_box["comfort"] = UISurfaceImageButton(
-            ui_scale(pygame.Rect((63, 144), (126, 36))),
+            ui_scale(pygame.Rect((63, 0), (126, 36))),
             "Comfort",
             {"normal": get_button_dict(ButtonStyles.MENU_MIDDLE, (126, 36))["normal"]},
             object_id="@buttonstyles_menu_middle",
             container=self.rel_button_container,
             manager=MANAGER,
+            anchors={"top_target": self.rel_type_box["trust"]}
         )
         self.rel_change_inc["comfort_increase"] = UISurfaceImageButton(
-                ui_scale(pygame.Rect((124, 144), (48, 36))),
+                ui_scale(pygame.Rect((124, 0), (48, 36))),
                 "screens.relationship_editor.plus_icon_placeholder",
                 get_button_dict(ButtonStyles.PROFILE_RIGHT, (48, 36)),
                 object_id="@buttonstyles_profile_right",
                 manager=MANAGER,
-                anchors={"right": "right", "right_target": self.rel_type_box["comfort"]},
+                anchors={"right": "right", "right_target": self.rel_type_box["comfort"], "top_target": self.rel_type_box["trust"]},
                 container=self.rel_button_container,
             )
         self.rel_change_dec["comfort_decrease"] = UISurfaceImageButton(
-                ui_scale(pygame.Rect((-171,144), (48, 36))),
+                ui_scale(pygame.Rect((-171,0), (48, 36))),
                 "screens.relationship_editor.minus_icon_placeholder",
                 get_button_dict(ButtonStyles.PROFILE_LEFT, (48, 36)),
                 object_id="@buttonstyles_profile_left",
                 manager=MANAGER,
-                anchors={"left": "left", "left_target": self.rel_type_box["comfort"]},
+                anchors={"left": "left", "left_target": self.rel_type_box["comfort"], "top_target": self.rel_type_box["trust"]},
                 container=self.rel_button_container,
             )
 
 
         self.rel_type_box["romance"] = UISurfaceImageButton(
-            ui_scale(pygame.Rect((63, 180), (126, 46))),
-            "Romantic Interest",
-            {"normal": get_button_dict(ButtonStyles.MENU_MIDDLE, (126, 46))["normal"]},
+            ui_scale(pygame.Rect((63, -7), (126, 56))),
+            "Romantic\nInterest",
+            {"normal": get_button_dict(ButtonStyles.MENU_MIDDLE, (126, 42))["normal"]},
             object_id="@buttonstyles_menu_middle",
+            text_layer_object_id="@buttonstyles_ladder_multiline",
             container=self.rel_button_container,
             manager=MANAGER,
+            anchors={"top_target": self.rel_type_box["comfort"]},
+            text_is_multiline=True,
         )
         self.rel_change_inc["romance_increase"] = UISurfaceImageButton(
-                ui_scale(pygame.Rect((124, 180), (48, 46))),
+                ui_scale(pygame.Rect((124, 0), (48, 42))),
                 "screens.relationship_editor.plus_icon_placeholder",
-                get_button_dict(ButtonStyles.PROFILE_RIGHT, (48, 46)),
+                get_button_dict(ButtonStyles.PROFILE_RIGHT, (48, 42)),
                 object_id="@buttonstyles_profile_right",
                 manager=MANAGER,
-                anchors={"right": "right", "right_target": self.rel_type_box["romance"]},
+                anchors={"right": "right", "right_target": self.rel_type_box["romance"], "top_target": self.rel_type_box["comfort"]},
                 container=self.rel_button_container,
             )
         self.rel_change_dec["romance_decrease"] = UISurfaceImageButton(
-                ui_scale(pygame.Rect((-171,180), (48, 46))),
+                ui_scale(pygame.Rect((-171,0), (48, 42))),
                 "screens.relationship_editor.minus_icon_placeholder",
-                get_button_dict(ButtonStyles.PROFILE_LEFT, (48, 46)),
+                get_button_dict(ButtonStyles.PROFILE_LEFT, (48, 42)),
                 object_id="@buttonstyles_profile_left",
                 manager=MANAGER,
-                anchors={"left": "left", "left_target": self.rel_type_box["romance"]},
+                anchors={"left": "left", "left_target": self.rel_type_box["romance"], "top_target": self.rel_type_box["comfort"]},
                 container=self.rel_button_container,
             )
 
         self.update_list_cats()
-
-
 
     def update_list_cats(self):
         self.all_cats_list = [
@@ -649,6 +607,7 @@ class RelationshipEditorScreen(Screens):
             ),
         )
 
+
     def update_current_cat_info(self, reset_selected_cat=True):
         """Updates all elements with the current cat, as well as the selected cat.
         Called when the screen switched, and whenever the focused cat is switched"""
@@ -662,7 +621,7 @@ class RelationshipEditorScreen(Screens):
         ) = self.the_cat.determine_next_and_previous_cats(
             filter_func=(
                 lambda cat: cat.age
-                in ("young adult", "adult", "senior adult", "senior")
+                in ("newborn", "kitten", "juvenile", "adolescent", "young adult", "adult", "senior adult", "senior")
             )
         )
         (
@@ -685,59 +644,16 @@ class RelationshipEditorScreen(Screens):
         self.selected_cat_elements = {}
 
 
-        heading_rect = ui_scale(pygame.Rect((0, 25), (400, -1)))
-        self.current_cat_elements["heading"] = pygame_gui.elements.UITextBox(
-            "screens.choose_mate.heading",
-            heading_rect,
-            object_id=get_text_box_theme("#text_box_34_horizcenter"),
-            anchors={
-                "centerx": "centerx",
-            },
-            text_kwargs={
-                "name": shorten_text_to_fit(str(self.the_cat.name), 500, 18),
-                "m_c": self.the_cat,
-            },
-        )
-
-        self.info.set_anchors(
-            {"centerx": "centerx", "top_target": self.current_cat_elements["heading"]}
-        )
-        self.info.set_relative_position((0, 10))
-
-        self.current_cat_elements["heading"].line_spacing = 0.95
-        self.current_cat_elements["heading"].redraw_from_chunks()
-
-        del heading_rect
-
         self.current_cat_elements["image"] = pygame_gui.elements.UIImage(
-            ui_scale(pygame.Rect((50, 150), (150, 150))),
+            ui_scale(pygame.Rect((100, 107), (100, 100))),
             pygame.transform.scale(
-                self.the_cat.sprite, ui_scale_dimensions((150, 150))
+                self.the_cat.sprite, ui_scale_dimensions((100, 100))
             ),
-        )
-        name = str(self.the_cat.name)  # get name
-        if 11 <= len(name):  # check name length
-            short_name = str(name)[0:9]
-            name = short_name + "..."
-        self.current_cat_elements["name"] = pygame_gui.elements.ui_label.UILabel(
-            ui_scale(pygame.Rect((65, 115), (120, 30))),
-            name,
-            object_id="#text_box_34_horizcenter",
-        )
-
-        info = self.the_cat.get_info_block()
-
-        self.current_cat_elements["info"] = pygame_gui.elements.UITextBox(
-            info,
-            ui_scale(pygame.Rect((206, 175), (94, 100))),
-            object_id="#text_box_22_horizcenter_vertcenter_spacing_95",
-            manager=MANAGER,
         )
 
         if reset_selected_cat:
             self.selected_cat = None
         self.update_selected_cat()
-
 
     def update_selected_cat(self):
         """Updates all elements of the selected cat"""
@@ -751,70 +667,15 @@ class RelationshipEditorScreen(Screens):
             return
 
 
-        self.selected_cat_elements["center_heart"] = pygame_gui.elements.UIImage(
-            ui_scale(pygame.Rect((0, 188), (200, 78))),
-            pygame.transform.scale(
-                image_cache.load_image(
-                    "resources/images/heart_mates.png"
-                    if self.selected_cat.ID in self.the_cat.mate
-                    else (
-                        "resources/images/heart_breakup.png"
-                        if self.selected_cat.ID in self.the_cat.previous_mates
-                        else "resources/images/heart_maybe.png"
-                    )
-                ).convert_alpha(),
-                ui_scale_dimensions((200, 78)),
-            ),
-            anchors={"centerx": "centerx"},
-        )
-
         self.selected_cat_elements["image"] = pygame_gui.elements.UIImage(
-            ui_scale(pygame.Rect((600, 150), (150, 150))),
+            ui_scale(pygame.Rect((600, 107), (100, 100))),
             pygame.transform.scale(
-                self.selected_cat.sprite, ui_scale_dimensions((150, 150))
+                self.selected_cat.sprite, ui_scale_dimensions((100, 100))
             ),
         )
 
-        name = str(self.selected_cat.name)
-        if 11 <= len(name):  # check name length
-            short_name = str(name)[0:9]
-            name = short_name + "..."
-        self.selected_cat_elements["name"] = pygame_gui.elements.ui_label.UILabel(
-            ui_scale(pygame.Rect((620, 115), (110, 30))),
-            name,
-            object_id="#text_box_34_horizcenter",
-        )
 
-        info = self.selected_cat.get_info_block()
-        if self.selected_cat.mate:
-            info += f"\n{len(self.selected_cat.mate)} " + i18n.t(
-                "general.mate", count=len(self.selected_cat.mate)
-            )
-
-        self.selected_cat_elements["info"] = pygame_gui.elements.UITextBox(
-            info,
-            ui_scale(pygame.Rect((500, 175), (94, 100))),
-            object_id="#text_box_22_horizcenter_vertcenter_spacing_95",
-            manager=MANAGER,
-        )
-
-
-        if self.selected_cat.ID in self.the_cat.mate:
-            self.toggle_mate = UISurfaceImageButton(
-                ui_scale(pygame.Rect((323, 310), (153, 30))),
-                "screens.choose_mate.unset_mate",
-                get_button_dict(ButtonStyles.SQUOVAL, (153, 30)),
-                object_id="@buttonstyles_squoval",
-            )
-        else:
-            self.toggle_mate = UISurfaceImageButton(
-                ui_scale(pygame.Rect((323, 310), (153, 30))),
-                "screens.choose_mate.set_mate",
-                get_button_dict(ButtonStyles.SQUOVAL, (153, 30)),
-                object_id="@buttonstyles_squoval",
-            )
-
-        self.draw_info_block(self.the_cat, starting_pos=(50, 50))
+        self.draw_info_block(self.the_cat, starting_pos=(50, 100))
         self.draw_info_block(self.selected_cat, starting_pos=(550, 100))
 
     def update_both(self):
@@ -824,21 +685,6 @@ class RelationshipEditorScreen(Screens):
             reset_selected_cat=False
         )  # This will also refresh tab contents
         self.update_selected_cat()
-
-    def apply_cat_filter(self, search_text=""):
-        # Filter for dead or empty cats
-        self.filtered_cats = self.all_relations
-        if not get_clan_setting("show dead relation"):
-            self.filtered_cats = list(
-                filter(lambda rel: not rel.cat_to.dead, self.filtered_cats)
-            )
-        # Filter for search
-        search_cats = []
-        if search_text.strip() != "":
-            for cat in self.filtered_cats:
-                if search_text.lower() in str(cat.cat_to.name).lower():
-                    search_cats.append(cat)
-            self.filtered_cats = search_cats
 
     def draw_info_block(self, cat, starting_pos: tuple):
         if not cat:
@@ -944,6 +790,7 @@ class RelationshipEditorScreen(Screens):
                     ),
                 )
 
+
         col1 = i18n.t("general.moons_age", count=cat.moons)
         t = i18n.t(f"cat.personality.{cat.personality.trait}")
         if len(t) > 15:
@@ -961,17 +808,23 @@ class RelationshipEditorScreen(Screens):
         mates = False
         if len(cat.mate) > 0:
             col2 = i18n.t("general.has_a_mate")
-            if other_cat:
-                if other_cat.ID in cat.mate:
-                    mates = True
-                    col2 = i18n.t("general.cats_mate", name=other_cat.name)
+            t = i18n.t(f"{cat.skills.skill_string(short=True)}")
+            if len(t) > 11:
+                col2 += "\n" + t[:10] + "..."
+            else:
+                col2 += "\n" + t
         else:
             col2 = i18n.t("general.mate_none")
+            t = i18n.t(f"{cat.skills.skill_string(short=True)}")
+            if len(t) > 11:
+                col2 += "\n" + t[:10] + "..."
+            else:
+                col2 += "\n" + t
 
-        self.selected_cat_elements["col2" + tag] = pygame_gui.elements.UITextBox(
+        self.selected_cat_elements["col2" + tag] = UITextBoxTweaked(
             col2,
             ui_scale(pygame.Rect((x + 110, y + 126), (80, -1))),
-            object_id="#text_box_22_horizleft_spacing_95",
+            object_id=get_text_box_theme("#text_box_22_horizleft"),
             manager=MANAGER,
         )
         self.selected_cat_elements["col2" + tag].disable()
@@ -1079,8 +932,8 @@ class RelationshipEditorScreen(Screens):
             self.selected_cat_elements[
                 f"relation_heading{tag}"
             ] = pygame_gui.elements.UILabel(
-                ui_scale(pygame.Rect((x + 20, y + 160), (160, -1))),
-                "screens.mediation.cat_feelings",
+                ui_scale(pygame.Rect((x + 20, y + 165), (160, -1))),
+                "screens.relationship_editor.cat_feelings",
                 object_id="#text_box_22_horizcenter",
                 text_kwargs={"name": short_name, "m_c": cat},
             )
@@ -1125,6 +978,20 @@ class RelationshipEditorScreen(Screens):
             )
 
 
+    def apply_cat_filter(self, search_text=""):
+        # Filter for dead or empty cats
+        self.filtered_cats = self.all_relations
+        if not get_clan_setting("show dead relation"):
+            self.filtered_cats = list(
+                filter(lambda rel: not rel.cat_to.dead, self.filtered_cats)
+            )
+        # Filter for search
+        search_cats = []
+        if search_text.strip() != "":
+            for cat in self.filtered_cats:
+                if search_text.lower() in str(cat.cat_to.name).lower():
+                    search_cats.append(cat)
+            self.filtered_cats = search_cats
 
     def selected_cat_list(self):
         output = []
@@ -1198,24 +1065,20 @@ class RelationshipEditorScreen(Screens):
         del self.next_cat_button
         self.back_button.kill()
         del self.back_button
-        self.selected_frame_1.kill()
-        del self.selected_frame_1
-        self.selected_frame_2.kill()
-        del self.selected_frame_2
+        self.the_cat_frame.kill()
+        del self.the_cat_frame
+        self.selected_cat_frame.kill()
+        del self.selected_cat_frame
         self.cat_bg.kill()
         del self.cat_bg
-        self.deselect_1.kill()
-        del self.deselect_1
-        self.deselect_2.kill()
-        del self.deselect_2
+        self.remove_cat.kill()
+        del self.remove_cat
         self.next_page.kill()
         del self.next_page
         self.previous_page.kill()
         del self.previous_page
         self.results.kill()
         del self.results
-        self.random1.kill()
-        del self.random1
         self.random2.kill()
         del self.random2
         self.error.kill()
@@ -1233,24 +1096,7 @@ class RelationshipEditorScreen(Screens):
             self.selected_cat_elements[ele].kill()
         self.selected_cat_elements = {}
 
-
-
-        self.list_frame_image.kill()
-        self.list_frame_image = None
-
-        self.mates_cat_buttons = {}
         self.checkboxes = {}
-
-
-
-        self.the_cat_frame.kill()
-        self.the_cat_frame = None
-        self.mate_frame.kill()
-        self.mate_frame = None
-        self.info.kill()
-        self.info = None
-
-
 
     def on_use(self):
         super().on_use()
