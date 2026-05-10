@@ -212,7 +212,7 @@ class RelationshipEditorScreen(Screens):
                 )
                 self.update_current_cat_info(reset_selected_cat=False)
 
-            elif event.ui_element == self.random2:
+            elif event.ui_element == self.randomize_selected:
                 self.selected_cat = self.random_cat()
                 if pygame.key.get_mods() & pygame.KMOD_SHIFT:
                     self.the_cat = self.random_cat()
@@ -267,11 +267,29 @@ class RelationshipEditorScreen(Screens):
             get_box(BoxStyles.ROUNDED_BOX, (200, 350)),
         )
         self.selected_cat_frame = pygame_gui.elements.UIImage(
-            ui_scale(pygame.Rect((550, 100), (200, 350))),
+            ui_scale(pygame.Rect((550, 95), (200, 370))),
             get_box(BoxStyles.ROUNDED_BOX, (200, 350)),
         )
 
-        self.cat_bg = pygame_gui.elements.UIImage(
+        self.remove_cat = UISurfaceImageButton(
+            ui_scale(pygame.Rect((0, 434), (127, 30))),
+            "buttons.remove_cat",
+            get_button_dict(ButtonStyles.SQUOVAL, (127, 30)),
+            object_id="@buttonstyles_squoval",
+            manager=MANAGER,
+            anchors={"left": "left", "left_target": self.selected_cat_frame},
+        )
+        self.randomize_selected = UISurfaceImageButton(
+            ui_scale(pygame.Rect((0, 432), (34, 34))),
+            Icon.DICE,
+            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            object_id="@buttonstyles_icon",
+            manager=MANAGER,
+            sound_id="dice_roll",
+            anchors={"left": "left", "left_target": self.selected_cat_frame},
+        )
+
+        self.cat_list_frame = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((50, 470), (700, 150))),
             get_box(BoxStyles.ROUNDED_BOX, (700, 150)),
         )
@@ -281,6 +299,7 @@ class RelationshipEditorScreen(Screens):
             ui_scale(pygame.Rect((262, 432), (100, 30))),
             object_id="#text_box_30_horizleft",
         )
+        self.show_dead_text.disable()
 
 
         self.update_checkboxes()
@@ -301,14 +320,6 @@ class RelationshipEditorScreen(Screens):
             manager=MANAGER,
         )
 
-        self.remove_cat = UISurfaceImageButton(
-            ui_scale(pygame.Rect((605, 434), (127, 30))),
-            "buttons.remove_cat",
-            get_button_dict(ButtonStyles.SQUOVAL, (127, 30)),
-            object_id="@buttonstyles_squoval",
-            manager=MANAGER,
-        )
-
         self.results = pygame_gui.elements.UITextBox(
             "",
             ui_scale(pygame.Rect((280, 385), (229, 100))),
@@ -321,15 +332,6 @@ class RelationshipEditorScreen(Screens):
             ui_scale(pygame.Rect((280, 37), (229, 57))),
             object_id=get_text_box_theme("#text_box_22_horizcenter_spacing_95"),
             manager=MANAGER,
-        )
-
-        self.random2 = UISurfaceImageButton(
-            ui_scale(pygame.Rect((568, 432), (34, 34))),
-            Icon.DICE,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
-            object_id="@buttonstyles_icon",
-            manager=MANAGER,
-            sound_id="dice_roll",
         )
 
         self.search_bar_image = pygame_gui.elements.UIImage(
@@ -821,10 +823,10 @@ class RelationshipEditorScreen(Screens):
             else:
                 col2 += "\n" + t
 
-        self.selected_cat_elements["col2" + tag] = UITextBoxTweaked(
+        self.selected_cat_elements["col2" + tag] = pygame_gui.elements.UITextBox(
             col2,
             ui_scale(pygame.Rect((x + 110, y + 126), (80, -1))),
-            object_id=get_text_box_theme("#text_box_22_horizleft"),
+            object_id="#text_box_22_horizleft_spacing_95",
             manager=MANAGER,
         )
         self.selected_cat_elements["col2" + tag].disable()
@@ -932,7 +934,7 @@ class RelationshipEditorScreen(Screens):
             self.selected_cat_elements[
                 f"relation_heading{tag}"
             ] = pygame_gui.elements.UILabel(
-                ui_scale(pygame.Rect((x + 20, y + 165), (160, -1))),
+                ui_scale(pygame.Rect((x + 20, y + 175), (160, -1))),
                 "screens.relationship_editor.cat_feelings",
                 object_id="#text_box_22_horizcenter",
                 text_kwargs={"name": short_name, "m_c": cat},
@@ -1069,8 +1071,8 @@ class RelationshipEditorScreen(Screens):
         del self.the_cat_frame
         self.selected_cat_frame.kill()
         del self.selected_cat_frame
-        self.cat_bg.kill()
-        del self.cat_bg
+        self.cat_list_frame.kill()
+        del self.cat_list_frame
         self.remove_cat.kill()
         del self.remove_cat
         self.next_page.kill()
@@ -1079,8 +1081,8 @@ class RelationshipEditorScreen(Screens):
         del self.previous_page
         self.results.kill()
         del self.results
-        self.random2.kill()
-        del self.random2
+        self.randomize_selected.kill()
+        del self.randomize_selected
         self.error.kill()
         del self.error
         self.search_bar_image.kill()
