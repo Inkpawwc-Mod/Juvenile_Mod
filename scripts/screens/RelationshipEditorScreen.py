@@ -61,6 +61,7 @@ class RelationshipEditorScreen(Screens):
         self.search_bar = None
         self.search_bar_image = None
         self.checkboxes = {}
+        self.show_dead_checkbox = None
         self.rel_type_box = {}
         self.rel_type_buttons = {}
         self.rel_type_text = {}
@@ -231,6 +232,39 @@ class RelationshipEditorScreen(Screens):
                         self.selected_cat = event.ui_element.return_cat_object()
                     self.update_selected_cat()
 
+    def update_checkboxes(self):
+        # Remove all checkboxes
+        for ele in self.checkboxes:
+            self.checkboxes[ele].kill()
+        self.checkboxes = {}
+        self.checkboxes["show_dead"] = UIImageButton(
+            ui_scale(pygame.Rect((34, 0), (34, 34))),
+            "",
+            object_id=(
+                "@checked_checkbox"
+                if get_clan_setting("show dead relation")
+                else "@unchecked_checkbox"
+            ),
+            anchors={
+                "left": "left",
+                "left_target": self.search_bar_image,
+                "top": "top",
+                "top_target": self.search_bar_image
+            },
+        )
+        self.show_dead_checkbox = UIImageButton(
+            ui_scale(pygame.Rect((34, 0), (34, 34))),
+            "",
+            object_id="@buttonstyles_squoval",
+            anchors={
+                "left": "left",
+                "left_target": self.search_bar_image,
+                "top": "top",
+                "top_target": self.search_bar_image
+            },
+        )
+        self.show_dead_checkbox.hide()
+
     def screen_switches(self):
         super().screen_switches()
         self.show_mute_buttons()
@@ -263,42 +297,63 @@ class RelationshipEditorScreen(Screens):
         )
 
         self.the_cat_frame = pygame_gui.elements.UIImage(
-            ui_scale(pygame.Rect((50, 95), (200, 370))),
-            get_box(BoxStyles.ROUNDED_BOX, (200, 350)),
+            ui_scale(pygame.Rect((50, 95), (220, 370))),
+            get_box(BoxStyles.ROUNDED_BOX, (220, 350)),
         )
         self.selected_cat_frame = pygame_gui.elements.UIImage(
-            ui_scale(pygame.Rect((550, 95), (200, 370))),
-            get_box(BoxStyles.ROUNDED_BOX, (200, 350)),
+            ui_scale(pygame.Rect((530, 95), (220, 370))),
+            get_box(BoxStyles.ROUNDED_BOX, (220, 350)),
         )
 
         self.remove_cat = UISurfaceImageButton(
-            ui_scale(pygame.Rect((0, 434), (127, 30))),
+            ui_scale(pygame.Rect((-127, 380), (127, 30))),
             "buttons.remove_cat",
-            get_button_dict(ButtonStyles.SQUOVAL, (127, 30)),
-            object_id="@buttonstyles_squoval",
+            get_button_dict(ButtonStyles.MENU_LEFT, (127, 30)),
+            object_id="@buttonstyles_menu_left",
             manager=MANAGER,
-            anchors={"left": "left", "left_target": self.selected_cat_frame},
+            anchors={"right": "right", "right_target": self.selected_cat_frame},
         )
         self.randomize_selected = UISurfaceImageButton(
-            ui_scale(pygame.Rect((0, 432), (34, 34))),
+            ui_scale(pygame.Rect((-75, 30), (34, 34))),
             Icon.DICE,
             get_button_dict(ButtonStyles.ICON, (34, 34)),
             object_id="@buttonstyles_icon",
             manager=MANAGER,
             sound_id="dice_roll",
-            anchors={"left": "left", "left_target": self.selected_cat_frame},
+            anchors={
+                "right": "right",
+                "bottom": "bottom",
+                "right_target": self.selected_cat_frame,
+                "bottom_target": self.remove_cat
+            },
         )
 
         self.cat_list_frame = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((50, 470), (700, 150))),
             get_box(BoxStyles.ROUNDED_BOX, (700, 150)),
         )
-        self.cat_list_frame.disable()
+
+        self.search_bar_image = pygame_gui.elements.UIImage(
+            ui_scale(pygame.Rect((55, 625), (118, 34))),
+            pygame.image.load("resources/images/search_bar.png").convert_alpha(),
+            manager=MANAGER,
+        )
+        self.search_bar = pygame_gui.elements.UITextEntryLine(
+            ui_scale(pygame.Rect((60, 629), (115, 27))),
+            object_id="#search_entry_box",
+            placeholder_text="general.name_search",
+            manager=MANAGER,
+        )
 
         self.show_dead_text = pygame_gui.elements.UITextBox(
             "screens.relationship.show_dead_checkbox",
-            ui_scale(pygame.Rect((262, 432), (100, 30))),
+            ui_scale(pygame.Rect((100, 0), (100, 30))),
             object_id="#text_box_30_horizleft",
+            anchors={
+                "left": "left",
+                "left_target": self.show_dead_checkbox,
+                "top": "top"
+            }
         )
         self.show_dead_text.disable()
 
@@ -321,25 +376,6 @@ class RelationshipEditorScreen(Screens):
             manager=MANAGER,
         )
 
-
-        self.error = pygame_gui.elements.UITextBox(
-            "",
-            ui_scale(pygame.Rect((280, 37), (229, 57))),
-            object_id=get_text_box_theme("#text_box_22_horizcenter_spacing_95"),
-            manager=MANAGER,
-        )
-
-        self.search_bar_image = pygame_gui.elements.UIImage(
-            ui_scale(pygame.Rect((55, 625), (118, 34))),
-            pygame.image.load("resources/images/search_bar.png").convert_alpha(),
-            manager=MANAGER,
-        )
-        self.search_bar = pygame_gui.elements.UITextEntryLine(
-            ui_scale(pygame.Rect((60, 629), (115, 27))),
-            object_id="#search_entry_box",
-            placeholder_text="general.name_search",
-            manager=MANAGER,
-        )
 
         self.update_list_cats()
         self.update_rel_choices()
@@ -589,20 +625,7 @@ class RelationshipEditorScreen(Screens):
                     y += 55
                     x = 65
 
-    def update_checkboxes(self):
-        # Remove all checkboxes
-        for ele in self.checkboxes:
-            self.checkboxes[ele].kill()
-        self.checkboxes = {}
-        self.checkboxes["show_dead"] = UIImageButton(
-            ui_scale(pygame.Rect((232, 432), (34, 34))),
-            "",
-            object_id=(
-                "@checked_checkbox"
-                if get_clan_setting("show dead relation")
-                else "@unchecked_checkbox"
-            ),
-        )
+
 
 
     def update_current_cat_info(self, reset_selected_cat=True):
@@ -930,7 +953,7 @@ class RelationshipEditorScreen(Screens):
             self.selected_cat_elements[
                 f"relation_heading{tag}"
             ] = pygame_gui.elements.UILabel(
-                ui_scale(pygame.Rect((x + 20, y + 175), (160, -1))),
+                ui_scale(pygame.Rect((x + 20, y + 160), (160, -1))),
                 "screens.relationship_editor.cat_feelings",
                 object_id="#text_box_22_horizcenter",
                 text_kwargs={"name": short_name, "m_c": cat},
@@ -1077,8 +1100,6 @@ class RelationshipEditorScreen(Screens):
         del self.previous_page
         self.randomize_selected.kill()
         del self.randomize_selected
-        self.error.kill()
-        del self.error
         self.search_bar_image.kill()
         del self.search_bar_image
         self.search_bar.kill()
@@ -1093,6 +1114,8 @@ class RelationshipEditorScreen(Screens):
         self.selected_cat_elements = {}
 
         self.checkboxes = {}
+        self.show_dead_checkbox.kill()
+        del self.show_dead_checkbox
 
     def on_use(self):
         super().on_use()
