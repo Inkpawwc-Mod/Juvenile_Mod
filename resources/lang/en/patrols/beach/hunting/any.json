@@ -154,7 +154,7 @@
         "min_cats": 2,
         "max_cats": 6,
         "min_max_status": {},
-        "frequency": 2,
+        "frequency": 3,
         "intro_text": "The patrol looks around for something to disguise their scent while hunting.",
         "decline_text": "On second thought, maybe not.",
         "chance_of_success": 50,
@@ -251,12 +251,10 @@
                         ],
                         "mutual": false,
                         "values": [
+                            "like",
                             "trust"
                         ],
-                        "amount": -5,
-                        "log": {
-                            "cats_from": "cat_from and cat_to weren't able to find any prey while hunting together."
-                        }
+                        "amount": -5
                     }
                 ],
                 "frequency": 4
@@ -274,12 +272,10 @@
                         ],
                         "mutual": false,
                         "values": [
+                            "like",
                             "trust"
                         ],
-                        "amount": -5,
-                        "log": {
-                            "cats_from": "cat_from and cat_to tried to cover their scent on a hunting patrol, but it backfired and scared off the prey."
-                        }
+                        "amount": -5
                     }
                 ],
                 "frequency": 4
@@ -5993,7 +5989,7 @@
                 }
             ],
             "art": "gen_angry_cat_warrior"
-        },        
+        },
         {
             "text": "s_c spots a lone egg in an unattended kelp nest, but as {PRONOUN/s_c/subject} {VERB/s_c/clamber/clambers} over, wingbeats buffet and a huge gannet lands right on it. s_c reacts lightning-fast, dodging its stabbing beak, then leaps onto its back and sinks {PRONOUN/s_c/poss} teeth into the back of its neck. It writhes and struggles, then lies still. That piece of fresh-kill is so big, s_c and p_l have to carry it together!",
             "exp": 35,

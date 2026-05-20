@@ -2710,7 +2710,7 @@
             "any"
         ],
         "season": [
-            "-leaf-bare"
+            "any"
         ],
         "types": [
             "hunting"
@@ -2722,7 +2722,7 @@
         "min_max_status": {
             "normal adult": [
                 1,
-                3
+                6
             ]
         },
         "frequency": 1,
@@ -2731,7 +2731,7 @@
         "chance_of_success": 50,
         "success_outcomes": [
             {
-                "text": "It's the perfect time of day, the cats melting in and out of the shadows, piling up fresh-kill. Finally, p_l calls off the patrol: not because the prey has escaped them, but because they're going to have trouble carrying it all home.",
+                "text": "It's the perfect time of day, the cats melting in and out of their territory's shadowy cover as their successes begin to pile up. At first there's only a couple pieces of prey, then more, and more, and more, until finally p_l calls off the patrol: not because the prey has escaped them, but because they're going to have trouble carrying it all home.",
                 "exp": 30,
                 "relationships": [
                     {
@@ -2751,7 +2751,7 @@
                 "frequency": 3
             },
             {
-                "text": "As the day's prey heads home, the evening's prey awakens. The patrol capitalizes on the animals' sleepiness, so much so that the entire Clan comes to comment on the patrol's success when they return.",
+                "text": "With their diurnal prey tired and headed to their homes, their crepuscular counterparts come out in full force! As their nocturnal prey still blinks away the sleep in their eyes, the patrol has a truly premium number of opportunities to catch food, enough so that the entire Clan comes to comment on the patrol's success when they return.",
                 "exp": 30,
                 "relationships": [
                     {
@@ -2762,16 +2762,6 @@
                         "amount": 5,
                         "log": {
                             "cats_from": "cat_from and cat_to had a successful hunt together."
-                        }
-                    },
-                    {
-                        "cats_to": ["patrol"],
-                        "cats_from": ["clan"],
-                        "mutual": false,
-                        "values": ["respect"],
-                        "amount": 3,
-                        "log": {
-                            "cats_from": "cat_from noticed how successful cat_to's hunting patrol was."
                         }
                     }
                 ],
@@ -3475,7 +3465,7 @@
             "hunting"
         ],
         "tags": [],
-        "patrol_art": "gen_train_talkingAA",
+        "patrol_art": "gen_med_warappmedapp_herbcontest",
         "min_cats": 2,
         "max_cats": 6,
         "min_max_status": {
@@ -3630,7 +3620,7 @@
             "hunting"
         ],
         "tags": [],
-        "patrol_art": "gen_train_talkingAA",
+        "patrol_art": "gen_med_warappmedapp_herbcontest",
         "min_cats": 2,
         "max_cats": 6,
         "min_max_status": {
@@ -3796,7 +3786,7 @@
             "hunting"
         ],
         "tags": [],
-        "patrol_art": "gen_train_talkingAA",
+        "patrol_art": "gen_med_warappmedapp_herbcontest",
         "min_cats": 2,
         "max_cats": 6,
         "min_max_status": {
@@ -3972,7 +3962,7 @@
             "hunting"
         ],
         "tags": [],
-        "patrol_art": "gen_train_talkingAA",
+        "patrol_art": "gen_med_warappmedapp_herbcontest",
         "min_cats": 2,
         "max_cats": 6,
         "min_max_status": {
@@ -4136,7 +4126,7 @@
             "hunting"
         ],
         "tags": [],
-        "patrol_art": "gen_train_talkingAA",
+        "patrol_art": "gen_med_warappmedapp_herbcontest",
         "min_cats": 2,
         "max_cats": 6,
         "min_max_status": {
@@ -4585,7 +4575,7 @@
                 "frequency": 4
             },
             {
-                "text": "Spotting a rabbit, the bickering duo glance at each other, realizing they'll need to work together to catch it. Feeding the Clan comes before rivalries. Putting their differences aside, r_c chases the rabbit while p_l gets into position, catching the rabbit when r_c drives it into {PRONOUN/r_c/poss} paws.",
+                "text": "Spotting a rabbit, the bickering duo glance at each other, realising they'll need to work together to catch it. Feeding the Clan comes before rivalries. Putting their differences aside, r_c chases the rabbit while p_l gets into position, catching the rabbit when r_c drives it into {PRONOUN/r_c/poss} paws.",
                 "exp": 20,
                 "prey": [
                     "medium"
@@ -5039,7 +5029,7 @@
         "tags": [
             "romance"
         ],
-        "patrol_art": "running_two_warriors",
+        "patrol_art": "cat_running_two",
         "min_cats": 2,
         "max_cats": 2,
         "min_max_status": {
@@ -5164,17 +5154,14 @@
                         "cats_from": [
                             "r_c"
                         ],
-                        "mutual": false,
+                        "mutual": true,
                         "values": [
                             "respect",
                             "trust",
                             "romance",
                             "like"
                         ],
-                        "amount": 5,
-                        "log": {
-                            "cats_from": "cat_from is flattered p_l recognized {PRONOUN/r_c/poss} talent."
-                        }
+                        "amount": 5
                     }
                 ],
                 "art": "gen_happy_cat",
@@ -7637,7 +7624,7 @@
                     "values": ["respect"],
                     "mutual": false,
                     "amount": 10,
-                    "log": 
+                    "log":
                     {
                         "cats_from": "cat_from watches cat_to and {PRONOUN/cat_to/poss} patrol return triumphant from the vanquishing of the Rat King."
                     }

@@ -690,7 +690,7 @@
             "border"
         ],
         "tags": [],
-        "patrol_art": "running_two_warriors",
+        "patrol_art": "cat_running_two",
         "min_cats": 2,
         "max_cats": 2,
         "min_max_status": {
@@ -741,10 +741,7 @@
                         "values": [
                             "like"
                         ],
-                        "amount": -25,
-                        "log": {
-                            "cats_from": "cat_from was unhappy with cat_to for pushing the issue of {PRONOUN/cat_to/poss} feelings for {PRONOUN/cat_from/object}."
-                        }
+                        "amount": -25
                     },
                     {
                         "cats_to": [
@@ -835,10 +832,7 @@
                         "values": [
                             "like"
                         ],
-                        "amount": -25,
-                        "log": {
-                            "cats_from": "cat_from was unhappy with cat_to for pushing the issue of {PRONOUN/cat_to/poss} feelings for {PRONOUN/cat_from/object}."
-                        }
+                        "amount": -25
                     },
                     {
                         "cats_to": [
@@ -1619,13 +1613,13 @@
                 "text": "p_l doesn't care about kittypet drama. {PRONOUN/p_l/subject/CAP} {VERB/p_l/interrupt/interrupts} and {VERB/p_l/tell/tells} the kittypets to get lost. One kittypet doesn't appreciate p_l's tone and takes a swipe at {PRONOUN/p_l/object}. r_c jumps in to help a humiliated p_l drive off the kittypets.",
                 "exp": 20,
                 "outsider_rep": -3,
-                "injury": [
+                "injuries": [
                     {
                         "cats": [
                             "p_l"
                         ],
-                        "injuries": [
-                            "cat bite"
+                        "injury": [
+                            "cat_bite"
                         ],
                         "scars": [
                             "CATBITETWO"
@@ -2687,10 +2681,7 @@
                             "trust",
                             "comfort"
                         ],
-                        "amount": 30,
-                        "log": {
-                            "cats_from": "cat_from and cat_to fell in love over the course of many stolen moments at the border."
-                        }
+                        "amount": 30
                     },
                     {
                         "cats_from": [
@@ -2736,10 +2727,7 @@
                             "trust",
                             "comfort"
                         ],
-                        "amount": 30,
-                        "log": {
-                            "cats_from": "cat_from and cat_to fell in love over the course of many stolen moments at the border."
-                        }
+                        "amount": 30
                     },
                     {
                         "cats_from": [
@@ -2799,14 +2787,11 @@
                             "like",
                             "romance"
                         ],
-                        "amount": 50,
-                        "log": {
-                            "cats_from": "cat_from and cat_to fell in love over the course of many stolen moments at the border."
-                        }
+                        "amount": 50
                     },
                     {
                         "cats_from": [
-                            "clan", "high_lawful"
+                            "high_lawful"
                         ],
                         "cats_to": [
                             "p_l"
@@ -2851,10 +2836,7 @@
                             "trust",
                             "comfort"
                         ],
-                        "amount": 30,
-                        "log": {
-                            "cats_from": "cat_from and cat_to fell in love over the course of many stolen moments at the border."
-                        }
+                        "amount": 30
                     },
                     {
                         "cats_from": [
@@ -2899,10 +2881,7 @@
                             "trust",
                             "comfort"
                         ],
-                        "amount": 30,
-                        "log": {
-                            "cats_from": "cat_from and cat_to fell in love over the course of many stolen moments at the border."
-                        }
+                        "amount": 30
                     },
                     {
                         "cats_from": [
@@ -3368,10 +3347,7 @@
                         "cats_from": ["n_c:0"],
                         "cats_to": ["patrol"],
                         "values": ["like", "trust", "comfort"],
-                        "amount": 10,
-                        "log": {
-                            "cats_from": "cat_from was found and accepted into the Clan by cat_to's patrol."
-                        }
+                        "amount": 10
                     }
                 ],
                 "outsider_rep": 1,
