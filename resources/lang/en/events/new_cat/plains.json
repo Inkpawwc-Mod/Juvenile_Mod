@@ -35,10 +35,7 @@
             "cats_to": ["n_c:1"],
             "mutual": true,
             "values": ["comfort", "like"],
-            "amount": 5,
-            "log": {
-              "cats_from": "m_c found n_c:1 near {PRONOUN/n_c:1/poss} dead parent and brought {PRONOUN/n_c:1/object} into the Clan."
-            }
+            "amount": 5
           }
         ],
         "outsider": {
@@ -81,10 +78,7 @@
             "cats_to": ["n_c:0"],
             "mutual": true,
             "values": ["comfort", "like"],
-            "amount": 10,
-            "log": {
-              "cats_from": "m_c found n_c:0 in the tunnels and brought {PRONOUN/n_c:0/object} to the Clan."
-            }
+            "amount": 10
           }
         ],
         "outsider": {

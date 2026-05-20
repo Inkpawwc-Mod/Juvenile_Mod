@@ -80,11 +80,17 @@ class RoleScreen(Screens):
             elif event.ui_element == self.switch_warrior_app:
                 self.the_cat.rank_change(CatRank.APPRENTICE, resort=True)
                 self.update_selected_cat()
+            elif event.ui_element == self.switch_kit_app:
+                self.the_cat.rank_change(CatRank.KIT_APPRENTICE, resort=True)
+                self.update_selected_cat()
             elif event.ui_element == self.switch_med_app:
                 self.the_cat.rank_change(CatRank.MEDICINE_APPRENTICE, resort=True)
                 self.update_selected_cat()
             elif event.ui_element == self.switch_mediator_app:
                 self.the_cat.rank_change(CatRank.MEDIATOR_APPRENTICE, resort=True)
+                self.update_selected_cat()
+            elif event.ui_element == self.switch_juv_kitten:
+                self.the_cat.rank_change(CatRank.JUV_KITTEN, resort=True)
                 self.update_selected_cat()
 
         elif event.type == pygame.KEYDOWN:
@@ -216,6 +222,24 @@ class RoleScreen(Screens):
             text_is_multiline=True,
             text_layer_object_id="@buttonstyles_ladder_multiline",
         )
+        self.switch_kit_app = UISurfaceImageButton(
+            ui_scale(pygame.Rect((579, 0), (172, 52))),
+            "screens.role.switch_kit_app",
+            get_button_dict(ButtonStyles.LADDER_MIDDLE, (172, 52)),
+            object_id="@buttonstyles_ladder_middle",
+            anchors={"top_target": self.switch_mediator_app},
+            text_is_multiline=True,
+            text_layer_object_id="@buttonstyles_ladder_multiline",
+        )
+        self.switch_juv_kitten = UISurfaceImageButton(
+            ui_scale(pygame.Rect((579, 0), (172, 52))),
+            "screens.role.switch_juv_kitten",
+            get_button_dict(ButtonStyles.LADDER_MIDDLE, (172, 52)),
+            object_id="@buttonstyles_ladder_middle",
+            anchors={"top_target": self.switch_kit_app},
+            text_is_multiline=True,
+            text_layer_object_id="@buttonstyles_ladder_multiline",
+        )
 
         self.update_selected_cat()
 
@@ -302,6 +326,8 @@ class RoleScreen(Screens):
             CatRank.MEDIATOR_APPRENTICE: "mediator_app_icon.png",
             CatRank.WARRIOR: "warrior_icon.png",
             CatRank.APPRENTICE: "warrior_app_icon.png",
+            CatRank.KIT_APPRENTICE: "kit_icon.png",
+            CatRank.JUV_KITTEN: "kit_icon.png",
             CatRank.KITTEN: "kit_icon.png",
             CatRank.NEWBORN: "kit_icon.png",
             CatRank.ELDER: "elder_icon.png",
@@ -354,6 +380,10 @@ class RoleScreen(Screens):
             self.switch_med_app.enable()
             self.switch_warrior_app.disable()
             self.switch_mediator_app.enable()
+            self.switch_kit_app.disable()
+
+            # switch kit apprentice back to regular kitten
+            self.switch_juv_kitten.disable()
         elif self.the_cat.status.rank == CatRank.WARRIOR:
             # LEADERSHIP
             if leader_invalid:
@@ -376,6 +406,10 @@ class RoleScreen(Screens):
             self.switch_med_app.disable()
             self.switch_warrior_app.disable()
             self.switch_mediator_app.disable()
+            self.switch_kit_app.disable()
+
+            # switch kit apprentice back to regular kitten
+            self.switch_juv_kitten.disable()
         elif self.the_cat.status.rank == CatRank.DEPUTY:
             if leader_invalid:
                 self.promote_leader.enable()
@@ -394,6 +428,10 @@ class RoleScreen(Screens):
             self.switch_med_app.disable()
             self.switch_warrior_app.disable()
             self.switch_mediator_app.disable()
+            self.switch_kit_app.disable()
+
+            # switch kit apprentice back to regular kitten
+            self.switch_juv_kitten.disable()
         elif self.the_cat.status.rank == CatRank.MEDICINE_CAT:
             self.promote_leader.disable()
             self.promote_deputy.disable()
@@ -407,6 +445,10 @@ class RoleScreen(Screens):
             self.switch_med_app.disable()
             self.switch_warrior_app.disable()
             self.switch_mediator_app.disable()
+            self.switch_kit_app.disable()
+
+            # switch kit apprentice back to regular kitten
+            self.switch_juv_kitten.disable()
         elif self.the_cat.status.rank == CatRank.MEDIATOR:
             if leader_invalid:
                 self.promote_leader.enable()
@@ -427,6 +469,10 @@ class RoleScreen(Screens):
             self.switch_med_app.disable()
             self.switch_warrior_app.disable()
             self.switch_mediator_app.disable()
+            self.switch_kit_app.disable()
+
+            # switch kit apprentice back to regular kitten
+            self.switch_juv_kitten.disable()
         elif self.the_cat.status.rank == CatRank.ELDER:
             if leader_invalid:
                 self.promote_leader.enable()
@@ -448,6 +494,10 @@ class RoleScreen(Screens):
             self.switch_med_app.disable()
             self.switch_warrior_app.disable()
             self.switch_mediator_app.disable()
+            self.switch_kit_app.disable()
+
+            # switch kit apprentice back to regular kitten
+            self.switch_juv_kitten.disable()
         elif self.the_cat.status.rank == CatRank.MEDICINE_APPRENTICE:
             self.promote_leader.disable()
             self.promote_deputy.disable()
@@ -462,6 +512,10 @@ class RoleScreen(Screens):
             self.switch_med_app.disable()
             self.switch_warrior_app.enable()
             self.switch_mediator_app.enable()
+            self.switch_kit_app.disable()
+
+            # switch kit apprentice back to regular kitten
+            self.switch_juv_kitten.disable()
         elif self.the_cat.status.rank == CatRank.MEDIATOR_APPRENTICE:
             self.promote_leader.disable()
             self.promote_deputy.disable()
@@ -476,6 +530,10 @@ class RoleScreen(Screens):
             self.switch_med_app.enable()
             self.switch_warrior_app.enable()
             self.switch_mediator_app.disable()
+            self.switch_kit_app.disable()
+
+            # switch kit apprentice back to regular kitten
+            self.switch_juv_kitten.disable()
         elif self.the_cat.status.is_leader:
             self.promote_leader.disable()
             self.promote_deputy.disable()
@@ -490,6 +548,46 @@ class RoleScreen(Screens):
             self.switch_med_app.disable()
             self.switch_warrior_app.disable()
             self.switch_mediator_app.disable()
+            self.switch_kit_app.disable()
+
+            # switch kit apprentice back to regular kitten
+            self.switch_juv_kitten.disable()
+        elif self.the_cat.status.rank == CatRank.JUV_KITTEN:
+            self.promote_leader.disable()
+            self.promote_deputy.disable()
+
+            # ADULT CAT ROLES
+            self.switch_warrior.disable()
+            self.switch_med_cat.disable()
+            self.switch_mediator.disable()
+            self.retire.disable()
+
+            # In-TRAINING ROLES:
+            self.switch_med_app.disable()
+            self.switch_warrior_app.disable()
+            self.switch_mediator_app.disable()
+            self.switch_kit_app.enable()
+
+            #switch kit apprentice back to regular kitten
+            self.switch_juv_kitten.disable()
+        elif self.the_cat.status.rank == CatRank.KIT_APPRENTICE:
+            self.promote_leader.disable()
+            self.promote_deputy.disable()
+
+            # ADULT CAT ROLES
+            self.switch_warrior.disable()
+            self.switch_med_cat.disable()
+            self.switch_mediator.disable()
+            self.retire.disable()
+
+            # In-TRAINING ROLES:
+            self.switch_med_app.disable()
+            self.switch_warrior_app.disable()
+            self.switch_mediator_app.disable()
+            self.switch_kit_app.disable()
+
+            #switch kit apprentice back to regular kitten
+            self.switch_juv_kitten.enable()
         else:
             self.promote_leader.disable()
             self.promote_deputy.disable()
@@ -504,6 +602,10 @@ class RoleScreen(Screens):
             self.switch_med_app.disable()
             self.switch_warrior_app.disable()
             self.switch_mediator_app.disable()
+            self.switch_kit_app.disable()
+
+            #switch kit apprentice back to regular kitten
+            self.switch_juv_kitten.disable()
 
     def get_role_blurb(self):
         if self.the_cat.status.rank == CatRank.WARRIOR:
@@ -524,6 +626,10 @@ class RoleScreen(Screens):
             output = "screens.role.blurb_medcat_app"
         elif self.the_cat.status.rank == CatRank.MEDIATOR_APPRENTICE:
             output = "screens.role.blurb_mediator_app"
+        elif self.the_cat.status.rank == CatRank.KIT_APPRENTICE:
+            output = "screens.role.blurb_kit_app"
+        elif self.the_cat.status.rank == CatRank.JUV_KITTEN:
+            output = "screens.role.blurb_kitten"
         elif self.the_cat.status.rank == CatRank.KITTEN:
             output = "screens.role.blurb_kitten"
         elif self.the_cat.status.rank == CatRank.NEWBORN:
@@ -560,6 +666,10 @@ class RoleScreen(Screens):
         del self.switch_warrior_app
         self.switch_mediator_app.kill()
         del self.switch_mediator_app
+        self.switch_kit_app.kill()
+        del self.switch_kit_app
+        self.switch_juv_kitten.kill()
+        del self.switch_juv_kitten
         self.blurb_background.kill()
         del self.blurb_background
 

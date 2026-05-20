@@ -17,6 +17,7 @@ from .MedDenScreen import MedDenScreen
 from .MediationScreen import MediationScreen
 from .PatrolScreen import PatrolScreen
 from .ProfileScreen import ProfileScreen
+from .RelationshipEditorScreen import RelationshipEditorScreen
 from .RelationshipScreen import RelationshipScreen
 from .RoleScreen import RoleScreen
 from .Screens import Screens
@@ -33,6 +34,7 @@ from .make_clan_screens.ChooseNameScreen import ChooseNameScreen
 from .make_clan_screens.ChooseSymbolScreen import ChooseSymbolScreen
 from .make_clan_screens.ClanCreatedScreen import ClanCreatedScreen
 
+from .AppDenScreen import AppDenScreen
 # ---------------------------------------------------------------------------- #
 #                                  UI RULES                                    #
 # ---------------------------------------------------------------------------- #
@@ -77,6 +79,7 @@ def rebuild_all_screens():
         GameScreen.MED_DEN: MedDenScreen,
         GameScreen.WARRIOR_DEN: WarriorDenScreen,
         GameScreen.LEADER_DEN: LeaderDenScreen,
+        GameScreen.APP_DEN: AppDenScreen,
         GameScreen.EVENTS: EventsScreen,
         GameScreen.SETTINGS: SettingsScreen,
         GameScreen.CLAN_SETTINGS: ClanSettingsScreen,
@@ -91,6 +94,7 @@ def rebuild_all_screens():
         GameScreen.MEDIATION: MediationScreen,
         GameScreen.CHANGE_GENDER: ChangeGenderScreen,
         GameScreen.EVENT_EDIT: EventEditScreen,
+        GameScreen.RELATIONSHIP_EDITOR: RelationshipEditorScreen
     }
 
     for enum, classobj in enum_to_class.items():

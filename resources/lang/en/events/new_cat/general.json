@@ -1104,7 +1104,7 @@
         "new_cat": [
           [
             "old_name",
-            "backstory:ostracized_warrior,disgraced1,disgraced2,otherclan1",
+            "backstory:ostracized_warrior,disgraced1,disgraced2,otherclan",
             "status:warrior"
           ]
         ],
@@ -1150,7 +1150,7 @@
         "new_cat": [
           [
             "old_name",
-            "backstory:ostracized_warrior,disgraced1,disgraced2,disgraced3,otherclan1",
+            "backstory:ostracized_warrior,disgraced1,disgraced2,disgraced3,otherclan",
             "status:warrior"
           ]
         ],
@@ -1197,7 +1197,7 @@
           [
             "old_name",
             "backstory:medicine_cat",
-            "status:medicine cat"
+            "status:medicine_cat"
           ]
         ],
         "other_clan": {
@@ -1281,7 +1281,7 @@
         "season": ["any"],
         "sub_type": ["war"],
         "frequency": 2,
-        "event_text": "m_c slinks into o_c_n's nursery in the dead of night, making off with an entire litter of their kits. Rumor has it that their parent abandoned their Clan to try and track down the kits — even better for c_n!",
+        "event_text": "m_c slinks into o_c_n's nursery in the dead of night, making off with an entire litter of their kits. Rumour has it that their parent abandoned their Clan to try and track down the kits — even better for c_n!",
         "m_c": {
             "status": [
                 "leader",
@@ -1300,8 +1300,7 @@
                 "age:has_kits",
                 "former clancat",
                 "meeting",
-                "new_name",
-                "backstory:stolenkit2"
+                "new_name"
             ],
             [
                 "litter",
@@ -1887,7 +1886,7 @@
             "values": ["trust", "like"],
             "amount": 20,
                 "log": {
-                    "cats_from": "cat_from was thankful that cat_to prevented a bloody battle against an enemy Clan."
+                    "cats_from": "cat_from was thankful that cat_to prevented a bloody battle against o_c_n."
                 }
         }
     ],
@@ -1966,7 +1965,7 @@
     "relationships": [
         {
             "cats_from": ["clan"],
-            "cats_to": ["n_c:0", "n_c:1", "n_c:2"],
+            "cats_to": ["n_c:0, n_c:1, n_c:2"],
             "mutual": false,
             "values": ["trust", "like"],
             "amount": 10,
@@ -1976,7 +1975,7 @@
         },
         {
             "cats_from": ["clan", "high_aggress"],
-            "cats_to": ["n_c:0", "n_c:1", "n_c:2"],
+            "cats_to": ["n_c:0, n_c:1, n_c:2"],
             "mutual": false,
             "values": ["trust", "like"],
             "amount": -10,
@@ -2022,12 +2021,12 @@
     "relationships": [
         {
             "cats_from": ["clan"],
-            "cats_to": ["n_c:0", "n_c:1", "n_c:2"],
+            "cats_to": ["n_c:0, n_c:1, n_c:2"],
             "mutual": false,
             "values": ["trust", "like"],
             "amount": -10,
             "log": {
-                    "cats_from": "cat_from will remember the rogue who dared to attack c_n so brazenly during a battle against an enemy Clan."
+                    "cats_from": "cat_from will remember the rogue who dared to attack c_n so brazenly during a battle against o_c_n."
                 }
         }
     ],
@@ -2068,17 +2067,17 @@
     "relationships": [
         {
             "cats_from": ["clan"],
-            "cats_to": ["n_c:0", "n_c:1", "n_c:2"],
+            "cats_to": ["n_c:0, n_c:1, n_c:2"],
             "mutual": false,
             "values": ["trust", "like"],
             "amount": 10,
             "log": {
-                    "cats_from": "cat_from will remember the kittypet who dared to stop an entire battle against an enemy Clan."
+                    "cats_from": "cat_from will remember the kittypet who dared to stop an entire battle against o_c_n."
                 }
         },
         {
             "cats_from": ["clan", "high_lawful"],
-            "cats_to": ["n_c:0", "n_c:1", "n_c:2"],
+            "cats_to": ["n_c:0, n_c:1, n_c:2"],
             "mutual": false,
             "values": ["trust", "like"],
             "amount": -15,

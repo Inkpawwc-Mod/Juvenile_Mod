@@ -414,7 +414,39 @@ class StartScreen(Screens):
             self.elements["switch_clan"].disable()
             self.current_focus = self.elements["new_clan"]
 
-        self.reload_errors()
+        if switch_get_value(Switch.error_message):
+            error_text = "screens.start.error_text"
+            traceback_text = ""
+            if switch_get_value(Switch.traceback):
+                print("Traceback:")
+                print(switch_get_value(Switch.traceback))
+                traceback_text = "<br><br>" + escape(
+                    "".join(
+                        traceback.format_exception(
+                            switch_get_value(Switch.traceback),
+                            switch_get_value(Switch.traceback),
+                            switch_get_value(Switch.traceback).__traceback__,
+                        )
+                    )
+                )  # pylint: disable=line-too-long
+            self.error_label.set_text(
+                error_text,
+                text_kwargs={
+                    "error": str(switch_get_value(Switch.error_message)),
+                    Switch.traceback: traceback_text,
+                },
+            )
+            self.error_box.show()
+            self.error_label.show()
+            self.error_gethelp.show()
+            self.open_data_directory_button.show()
+
+            if get_version_info().is_sandboxed:
+                self.open_data_directory_button.hide()
+
+            self.closebtn.show()
+
+            self.error_open = True
 
         if game.clan is not None:
             key_copy = tuple(Cat.all_cats.keys())
