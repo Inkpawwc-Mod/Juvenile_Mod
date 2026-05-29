@@ -469,8 +469,6 @@ class Cat:
             self.experience = 0
         elif self.age == CatAge.JUVENILE:
             self.experience = 0
-        elif self.age == CatAge.JUVENILE:
-            self.experience = 0
         elif self.age == CatAge.ADOLESCENT:
             m = self.moons
             self.experience = 0
@@ -2981,8 +2979,6 @@ class Cat:
         if self.age == CatAge.NEWBORN:
             file_name = "faded_newborn"
         elif self.age == CatAge.KITTEN:
-            file_name = "faded_kitten"
-        elif self.age == CatAge.JUVENILE:
             file_name = "faded_kitten"
         elif self.age == CatAge.JUVENILE:
             file_name = "faded_kitten"
