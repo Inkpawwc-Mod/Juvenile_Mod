@@ -60,8 +60,6 @@ class RelationshipEditorScreen(Screens):
         self.selected_cat = None
         self.search_bar = None
         self.search_bar_image = None
-        self.checkboxes = {}
-        self.show_dead_checkbox = None
         self.rel_type_box = {}
         self.rel_type_buttons = {}
         self.rel_type_text = {}
@@ -107,10 +105,7 @@ class RelationshipEditorScreen(Screens):
             elif event.ui_element == self.previous_page:
                 self.page -= 1
                 self.update_page()
-            elif event.ui_element == self.checkboxes["show_dead"]:
-                switch_clan_setting("show dead relation")
-                self.update_checkboxes()
-                self.apply_cat_filter()
+
             elif event.ui_element == self.remove_cat:
                 self.selected_cat = None
                 self.update_selected_cat()
@@ -232,38 +227,6 @@ class RelationshipEditorScreen(Screens):
                         self.selected_cat = event.ui_element.return_cat_object()
                     self.update_selected_cat()
 
-    def update_checkboxes(self):
-        # Remove all checkboxes
-        for ele in self.checkboxes:
-            self.checkboxes[ele].kill()
-        self.checkboxes = {}
-        self.checkboxes["show_dead"] = UIImageButton(
-            ui_scale(pygame.Rect((34, 0), (34, 34))),
-            "",
-            object_id=(
-                "@checked_checkbox"
-                if get_clan_setting("show dead relation")
-                else "@unchecked_checkbox"
-            ),
-            anchors={
-                "left": "left",
-                "left_target": self.search_bar_image,
-                "top": "top",
-                "top_target": self.search_bar_image
-            },
-        )
-        self.show_dead_checkbox = UIImageButton(
-            ui_scale(pygame.Rect((34, 0), (34, 34))),
-            "",
-            object_id="@buttonstyles_squoval",
-            anchors={
-                "left": "left",
-                "left_target": self.search_bar_image,
-                "top": "top",
-                "top_target": self.search_bar_image
-            },
-        )
-        self.show_dead_checkbox.hide()
 
     def screen_switches(self):
         super().screen_switches()
@@ -345,20 +308,6 @@ class RelationshipEditorScreen(Screens):
             manager=MANAGER,
         )
 
-        self.show_dead_text = pygame_gui.elements.UITextBox(
-            "screens.relationship.show_dead_checkbox",
-            ui_scale(pygame.Rect((100, 0), (100, 30))),
-            object_id="#text_box_30_horizleft",
-            anchors={
-                "left": "left",
-                "left_target": self.show_dead_checkbox,
-                "top": "top"
-            }
-        )
-        self.show_dead_text.disable()
-
-
-        self.update_checkboxes()
 
 
         self.next_page = UISurfaceImageButton(
@@ -1050,12 +999,6 @@ class RelationshipEditorScreen(Screens):
         self.the_cat = None
         self.selected_cat = None
 
-        for ele in self.checkboxes:
-            self.checkboxes[ele].kill()
-        self.checkboxes = {}
-
-        self.show_dead_text.kill()
-        del self.show_dead_text
 
         for ele in self.rel_type_buttons:
             self.rel_type_buttons[ele].kill()
@@ -1113,9 +1056,6 @@ class RelationshipEditorScreen(Screens):
             self.selected_cat_elements[ele].kill()
         self.selected_cat_elements = {}
 
-        self.checkboxes = {}
-        self.show_dead_checkbox.kill()
-        del self.show_dead_checkbox
 
     def on_use(self):
         super().on_use()
