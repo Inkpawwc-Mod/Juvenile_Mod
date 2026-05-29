@@ -276,8 +276,14 @@ class RelationshipEditorScreen(Screens):
             manager=MANAGER,
             anchors={"right": "right", "right_target": self.selected_cat_frame},
         )
+
+        self.cat_list_frame = pygame_gui.elements.UIImage(
+            ui_scale(pygame.Rect((50, 470), (700, 150))),
+            get_box(BoxStyles.ROUNDED_BOX, (700, 150)),
+        )
+
         self.randomize_selected = UISurfaceImageButton(
-            ui_scale(pygame.Rect((-75, 30), (34, 34))),
+            ui_scale(pygame.Rect((0, 50), (34, 34))),
             Icon.DICE,
             get_button_dict(ButtonStyles.ICON, (34, 34)),
             object_id="@buttonstyles_icon",
@@ -286,14 +292,9 @@ class RelationshipEditorScreen(Screens):
             anchors={
                 "right": "right",
                 "bottom": "bottom",
-                "right_target": self.selected_cat_frame,
-                "bottom_target": self.remove_cat
+                "right_target": self.cat_list_frame,
+                "bottom_target": self.cat_list_frame
             },
-        )
-
-        self.cat_list_frame = pygame_gui.elements.UIImage(
-            ui_scale(pygame.Rect((50, 470), (700, 150))),
-            get_box(BoxStyles.ROUNDED_BOX, (700, 150)),
         )
 
         self.search_bar_image = pygame_gui.elements.UIImage(

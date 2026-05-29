@@ -616,7 +616,7 @@ class FreshkillPile:
         """
         nutrition = Nutrition()
         factor = 3
-        if cat.status.rank in [CatRank.NEWBORN, CatRank.KITTEN, CatRank.ELDER]:
+        if cat.status.rank in [CatRank.NEWBORN, CatRank.JUV_KITTEN, CatRank.KITTEN, CatRank.ELDER]:
             factor = 2
 
         queen_dict, kits = get_alive_clan_queens(self.living_cats)
