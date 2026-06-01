@@ -2106,7 +2106,8 @@
         "status": ["medicine cat"]
     },
     "new_cat": [
-        ["can_birth",
+        ["age:has_kits",
+        "can_birth",
         "meeting",
         "exists",
         "old_name",
@@ -2381,7 +2382,8 @@
         "status": ["medicine cat"]
     },
     "new_cat": [
-        ["can_birth",
+        ["age:has_kits",
+        "can_birth",
         "meeting",
         "exists",
         "old_name",
@@ -2461,7 +2463,8 @@
         "status": ["medicine cat"]
     },
     "new_cat": [
-        ["can_birth",
+        ["age:has_kits",
+        "can_birth",
         "meeting",
         "exists",
         "old_name",
@@ -2503,7 +2506,8 @@
         "trait": ["bloodthirsty", "cold", "cunning", "sneaky"]
     },
     "new_cat": [
-        ["can_birth",
+        ["age:has_kits",
+        "can_birth",
         "meeting",
         "exists",
         "old_name",
@@ -2547,7 +2551,8 @@
         "age": ["young adult", "adult", "senior adult"]
     },
     "new_cat": [
-        ["can_birth",
+        ["age:has_kits",
+        "can_birth",
         "meeting",
         "exists",
         "old_name",
@@ -2613,7 +2618,8 @@
         "trait": ["bloodthirsty", "fierce", "cold", "cunning", "shameless"]
     },
     "new_cat": [
-        ["can_birth",
+        ["age:has_kits",
+        "can_birth",
         "meeting",
         "exists",
         "old_name",
@@ -2697,7 +2703,8 @@
         "trait": ["bloodthirsty", "fierce", "cold", "cunning", "shameless"]
     },
     "new_cat": [
-        ["can_birth",
+        ["age:has_kits",
+        "can_birth",
         "meeting",
         "exists",
         "old_name",
@@ -2798,7 +2805,8 @@
         "trait": ["shameless", "arrogant", "bold", "cold", "ambitious", "cunning", "sneaky"]
     },
     "new_cat": [
-        ["can_birth",
+        ["age:has_kits",
+        "can_birth",
         "meeting",
         "exists",
         "old_name",
@@ -2894,7 +2902,8 @@
         "trait": ["shameless", "arrogant", "bold", "cold", "ambitious", "cunning", "sneaky"]
     },
     "new_cat": [
-        ["can_birth",
+        ["age:has_kits",
+        "can_birth",
         "meeting",
         "exists",
         "old_name",
@@ -3002,7 +3011,8 @@
         "age": ["young adult", "adult", "senior adult"]
     },
     "new_cat": [
-        ["can_birth",
+        ["age:has_kits",
+        "can_birth",
         "meeting",
         "exists",
         "old_name",
@@ -3073,7 +3083,8 @@
         "status": ["leader"]
     },
     "new_cat": [
-        ["can_birth",
+        ["age:has_kits",
+        "can_birth",
         "meeting",
         "exists",
         "old_name",
@@ -3168,7 +3179,8 @@
         "gender": ["male"]
     },
     "new_cat": [
-        ["can_birth",
+        ["age:has_kits",
+        "can_birth",
         "meeting",
         "exists",
         "old_name",
