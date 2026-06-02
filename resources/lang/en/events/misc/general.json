@@ -5120,6 +5120,28 @@
         ]
     },
     {
+        "event_id": "gen_misc_any_daydreamerkitten1",
+        "location": ["any"],
+        "season": ["any"],
+        "frequency": 2,
+        "event_text": "m_c watches the clouds and imagines a world far, far away...",
+        "m_c": {
+            "age": ["kitten"],
+            "trait": ["daydreamer"]
+        }
+    },
+    {
+        "event_id": "gen_misc_any_daydreamerkitten2",
+        "location": ["any"],
+        "season": ["any"],
+        "frequency": 2,
+        "event_text": "m_c watches a scuttling beetle and imagines it's on a great adventure.",
+        "m_c": {
+            "age": ["kitten"],
+            "trait": ["daydreamer"]
+        }
+    },
+    {
         "event_id": "gen_misc_any_welcoming_strangermeeting1",
         "location": [
             "any"
@@ -10066,6 +10088,87 @@
         ]
     },
     {
+        "event_id": "gen_misc_fallriskPOI_mentorapp",
+        "location": ["any"],
+        "season": ["any"],
+        "poi": {
+            "tags": ["fall_risk"]
+        },
+        "frequency": 1,
+        "event_text": "m_c takes r_c out to teach {PRONOUN/r_c/object} how to keep {PRONOUN/r_c/poss} footing around {POI/tag/fall_risk}.",
+        "m_c": {
+            "relationship_status": ["mentor/app"]
+        },
+        "r_c": {},
+        "relationships": [
+            {
+                "cats_from": ["r_c"],
+                "cats_to": ["m_c"],
+                "amount": 10,
+                "values": ["trust"],
+                "mutual": true,
+                "log": {
+                    "cats_from": "m_c taught r_c how to keep {PRONOUN/r_c/poss} footing around a dangerous part of the territory.",
+                    "cats_to": "m_c felt more confident in r_c's ability to look after {PRONOUN/r_c/self} after m_c taught {PRONOUN/r_c/object} some safety protocols around a dangerous part of the territory."
+                }
+            }
+        ]
+    },
+    {
+        "event_id": "gen_misc_taintedPOI_mentorapp",
+        "location": ["any"],
+        "season": ["any"],
+        "poi": {
+            "tags": ["tainted"]
+        },
+        "frequency": 1,
+        "event_text": "m_c takes r_c out to teach {PRONOUN/r_c/object} how to hunt safely near {POI/tag/tainted}.",
+        "m_c": {
+            "relationship_status": ["mentor/app"]
+        },
+        "r_c": {},
+        "relationships": [
+            {
+                "cats_from": ["r_c"],
+                "cats_to": ["m_c"],
+                "amount": 10,
+                "values": ["trust"],
+                "mutual": true,
+                "log": {
+                    "cats_from": "m_c taught r_c how to hunt safely near a dangerous part of the territory.",
+                    "cats_to": "m_c felt more confident in r_c's ability to look after {PRONOUN/r_c/self} after m_c taught {PRONOUN/r_c/object} some safety protocols around a dangerous part of the territory."
+                }
+            }
+        ]
+    },
+    {
+        "event_id": "gen_misc_unstablePOI_mentorapp",
+        "location": ["any"],
+        "season": ["any"],
+        "poi": {
+            "tags": ["unstable"]
+        },
+        "frequency": 1,
+        "event_text": "m_c takes r_c out to teach {PRONOUN/r_c/object} what might collapse and what can be safely walked over around {POI/tag/unstable}.",
+        "m_c": {
+            "relationship_status": ["mentor/app"]
+        },
+        "r_c": {},
+        "relationships": [
+            {
+                "cats_from": ["r_c"],
+                "cats_to": ["m_c"],
+                "amount": 10,
+                "values": ["trust"],
+                "mutual": true,
+                "log": {
+                    "cats_from": "m_c taught r_c how to safely traverse a dangerous part of the territory.",
+                    "cats_to": "m_c felt more confident in r_c's ability to look after {PRONOUN/r_c/self} after m_c taught {PRONOUN/r_c/object} some safety protocols around a dangerous part of the territory."
+                }
+            }
+        ]
+    },
+    {
         "event_id": "gen_misc_transition_from_female1",
         "location": [
             "any"
@@ -13805,5 +13908,32 @@
             ],
             "changed": 15
         }
-    }
+    },
+    {
+    "event_id": "gen_misc_greenleaf_splashdate",
+    "location": ["any", "-desert"],
+    "season": ["greenleaf"],
+    "sub_type": [],
+    "tags": ["romance"],
+    "frequency": 4,
+    "event_text": "m_c and r_c spend sunhigh frolicking and splashing each other by {POI/tag/water:flowing} to cool off in the sweltering heat.",
+    "m_c": {
+        "age": ["adolescent", "young adult"]
+    },
+    "r_c": {
+        "age": ["adolescent", "young adult"]
+    },
+    "relationships": [
+        {
+            "cats_from": ["m_c"],
+            "cats_to": ["r_c"],
+            "mutual": true,
+            "values": ["romance"],
+            "amount": 10,
+            "log": {
+  "cats_from": "cat_to and cat_from enjoyed splashing each other to beat the heat."
+                }
+        }
+    ]
+}
 ]
