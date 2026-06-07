@@ -898,7 +898,7 @@ class ProfileScreen(Screens):
         if the_cat.dead:
             old_clan = the_cat.status.get_last_living_group()
             if old_clan == CatGroup.PLAYER_CLAN_ID:
-                name = game.clan.displayname
+                name = game.clan.name
             # if they had an old clan that wasn't the player's, find it!
             elif old_clan:
                 name = [
@@ -920,7 +920,7 @@ class ProfileScreen(Screens):
         # otherwise, assume the cat takes the player clan's name
         # it's okay if this is an outsider, if they don't actually have a group to refer to then they won't use this variable
         else:
-            name = game.clan.displayname
+            name = game.clan.name
 
         if the_cat.status.is_exiled():
             if not name:
@@ -930,7 +930,7 @@ class ProfileScreen(Screens):
                     if c.group_ID == the_cat.status.get_last_living_group()
                 ]
             if not name:
-                name = game.clan.displayname
+                name = game.clan.name
 
         cat_clan = i18n.t(f"general.clan", name=f"{name}")
 
@@ -1245,11 +1245,11 @@ class ProfileScreen(Screens):
 
     def save_user_notes(self):
         """Saves user-entered notes."""
-        clanname = game.clan.name
+        save_id = game.clan.save_id
 
         notes = self.user_notes
 
-        notes_directory = get_save_dir() + "/" + clanname + "/notes"
+        notes_directory = get_save_dir() + "/" + save_id + "/notes"
         notes_file_path = notes_directory + "/" + self.the_cat.ID + "_notes.json"
 
         if not os.path.exists(notes_directory):
@@ -1264,9 +1264,9 @@ class ProfileScreen(Screens):
 
     def load_user_notes(self):
         """Loads user-entered notes."""
-        clanname = game.clan.name
+        save_id = game.clan.save_id
 
-        notes_directory = get_save_dir() + "/" + clanname + "/notes"
+        notes_directory = get_save_dir() + "/" + save_id + "/notes"
         notes_file_path = notes_directory + "/" + self.the_cat.ID + "_notes.json"
 
         if not os.path.exists(notes_file_path):
