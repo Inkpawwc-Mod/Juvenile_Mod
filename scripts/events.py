@@ -1260,12 +1260,12 @@ def perform_ceremonies(cat):
             if cat.status.rank == CatRank.DEPUTY:
                 game.clan.deputy = None
             ceremony(cat, CatRank.ELDER)
-            #change kitten rank to juv_kitten rank when kittens reach 3 moons
+            # change kitten rank to juv_kitten rank when kittens reach 3 moons
             if cat.moons == cat_class.age_moons[CatAge.JUVENILE][0]:
                 ceremony(cat, CatRank.JUV_KITTEN)
                 ceremony_accessory = True
                 gain_accessories(cat)
-    #change kitten rank to juv_kitten rank when kittens reach 3 moons
+    # change kitten rank to juv_kitten rank when kittens reach 3 moons
     if cat.moons == cat_class.age_moons[CatAge.JUVENILE][0]:
         ceremony(cat, CatRank.JUV_KITTEN)
         ceremony_accessory = True
