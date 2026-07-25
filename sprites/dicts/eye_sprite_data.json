@@ -1,43 +1,48 @@
 {
-    "spritesheet": [
-        "eyes"
-    ],
-    "sprite_list": [
+    "spritesheet": "eyes",
+    "palette_map": true,
+    "colour_data": [
         {
-            "YELLOW": "yellow",
-            "AMBER": "yellow",
-            "HAZEL": "green",
-            "PALEGREEN": "green",
-            "GREEN": "green",
-            "BLUE": "blue",
-            "DARKBLUE": "blue",
-            "GREY": "blue",
-            "CYAN": "blue",
-            "EMERALD": "green",
-            "HEATHERBLUE": "blue",
-            "SUNLITICE": "blue"
+            "BLUE": [
+                "blue",
+                "darkblue",
+                "grey",
+                "cyan",
+                "heatherblue",
+                "sunlitice",
+                "cobalt",
+                "paleblue",
+                "aurora",
+                "sea",
+                "bluebell"
+            ]
         },
         {
-            "COPPER": "yellow",
-            "SAGE": "green",
-            "COBALT": "blue",
-            "PALEBLUE": "blue",
-            "BRONZE": "yellow",
-            "SILVER": "yellow",
-            "PALEYELLOW": "yellow",
-            "GOLD": "yellow",
-            "GREENYELLOW": "yellow",
-            "ORANGE": "yellow",
-            "DAWN": "yellow",
-            "DUSK": "yellow"
+            "GREEN": [
+                "hazel",
+                "palegreen",
+                "green",
+                "emerald",
+                "sage",
+                "forest"
+            ]
         },
         {
-            "AURORA": "blue",
-            "FOREST": "green",
-            "MUSTARD": "yellow",
-            "EARTHY": "yellow",
-            "SEA": "blue",
-            "BLUEBELL": "blue"
+            "YELLOW": [
+                "yellow",
+                "amber",
+                "copper",
+                "bronze",
+                "silver",
+                "paleyellow",
+                "gold",
+                "greenyellow",
+                "orange",
+                "dawn",
+                "dusk",
+                "mustard",
+                "earthy"
+            ]
         }
     ]
 }
