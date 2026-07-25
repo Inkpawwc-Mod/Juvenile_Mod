@@ -152,7 +152,7 @@
         },
         "duration": 4,
         "medicine_duration": 2,
-        "infectiousness": 15,
+        "infectiousness": 10,
         "risks": [
             {
                 "name": "torn pelt",
@@ -191,7 +191,7 @@
         },
         "duration": 3,
         "medicine_duration": 2,
-        "infectiousness": 30,
+        "infectiousness": 3,
         "risks": [
             {
                 "name": "yellowcough",
@@ -205,7 +205,7 @@
         "herbs": {
         "1": [
             "plantain",
-            "juniper",
+            "honey",
             "poppy",
             "moss"
         ],
@@ -242,7 +242,7 @@
         },
         "duration": 3,
         "medicine_duration": 2,
-        "infectiousness": 15,
+        "infectiousness": 2,
         "risks": [
             {
                 "name": "whitecough",
@@ -256,7 +256,7 @@
         "herbs": {
             "1": [
                 "plantain",
-                "juniper",
+                "honey",
                 "poppy",
                 "moss"
             ],
@@ -307,7 +307,7 @@
                 "poppy"
             ],
             "2": [
-                "wild_garlic"
+                "honey"
             ],
             "3": [
                 "burdock"
@@ -384,7 +384,7 @@
             "1": [
                 "lungwort",
                 "plantain",
-                "juniper",
+                "honey",
                 "ragwort",
                 "poppy",
                 "moss"
@@ -466,7 +466,7 @@
         },
         "duration": 3,
         "medicine_duration": 2,
-        "infectiousness": 30,
+        "infectiousness": 10,
         "risks": [
             {
                 "name": "greencough",
@@ -480,7 +480,7 @@
         "herbs": {
             "1": [
                 "plantain",
-                "juniper",
+                "honey",
                 "poppy",
                 "moss"
             ],
@@ -518,7 +518,7 @@
         },
         "duration": 3,
         "medicine_duration": 3,
-        "infectiousness": 30,
+        "infectiousness": 6,
         "risks": [
             {
                 "name": "redcough",
@@ -531,7 +531,8 @@
         ],
         "herbs": {
             "1": [
-                "mallow"
+                "mallow",
+                "honey"
             ],
             "2": [
                 "tansy"

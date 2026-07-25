@@ -1104,7 +1104,7 @@
         "new_cat": [
           [
             "old_name",
-            "backstory:ostracized_warrior,disgraced1,disgraced2,otherclan",
+            "backstory:ostracized_warrior,disgraced1,disgraced2,otherclan1",
             "status:warrior"
           ]
         ],
@@ -1141,7 +1141,7 @@
         "season": ["any"],
         "sub_type": ["war"],
         "frequency": 2,
-        "event_text": "n_c:0, the deputy of o_c_n, has defected to c_n in the war, m_c finds {PRONOUN/n_c:0/object} at the border.",
+        "event_text": "The deputy of o_c_n, n_c:0, meets m_c at the border. {PRONOUN/n_c:0/subject/CAP}{VERB/n_c:0/'ve/'s} defected to c_n in the war.",
         "m_c": {
             "status": [
                 "leader", "deputy", "warrior", "medicine cat", "apprentice", "medicine cat apprentice", "mediator", "mediator apprentice"
@@ -1150,7 +1150,7 @@
         "new_cat": [
           [
             "old_name",
-            "backstory:ostracized_warrior,disgraced1,disgraced2,disgraced3,otherclan",
+            "backstory:ostracized_warrior,disgraced1,disgraced2,disgraced3,otherclan1",
             "status:warrior"
           ]
         ],
@@ -1187,7 +1187,7 @@
         "season": ["any"],
         "sub_type": ["war"],
         "frequency": 3,
-        "event_text": "n_c:0, the medicine cat of o_c_n, has defected to c_n in the war, {PRONOUN/n_c:0/subject} {VERB/n_c:0/meet/meets} m_c at the border.",
+        "event_text": "The medicine cat of o_c_n, n_c:0, meets m_c at the border. {PRONOUN/n_c:0/subject/CAP}{VERB/n_c:0/'ve/'s} defected to c_n in the war.",
         "m_c": {
             "status": [
                 "leader", "deputy", "warrior", "medicine cat", "apprentice", "medicine cat apprentice", "mediator", "mediator apprentice"
@@ -1197,7 +1197,7 @@
           [
             "old_name",
             "backstory:medicine_cat",
-            "status:medicine_cat"
+            "status:medicine cat"
           ]
         ],
         "other_clan": {
@@ -1281,7 +1281,7 @@
         "season": ["any"],
         "sub_type": ["war"],
         "frequency": 2,
-        "event_text": "m_c slinks into o_c_n's nursery in the dead of night, making off with an entire litter of their kits. Rumour has it that their parent abandoned their Clan to try and track down the kits — even better for c_n!",
+        "event_text": "m_c slinks into o_c_n's nursery in the dead of night, making off with an entire litter of their kits. Rumor has it that their parent abandoned their Clan to try and track down the kits. Even better for c_n!",
         "m_c": {
             "status": [
                 "leader",
@@ -1300,7 +1300,8 @@
                 "age:has_kits",
                 "former clancat",
                 "meeting",
-                "new_name"
+                "new_name",
+                "backstory:stolenkit2"
             ],
             [
                 "litter",
@@ -1585,7 +1586,7 @@
     "season": ["any"],
     "sub_type": ["war"],
     "frequency": 2,
-    "event_text": "In a battle against o_c_n, m_c and {PRONOUN/m_c/poss} opponent spot a loner caught in the crossfire and, working together, help get {PRONOUN/n_c:0/subject} to safety.",
+    "event_text": "In a battle against o_c_n, m_c and {PRONOUN/m_c/poss} opponent spot a loner caught in the crossfire and, working together, help get {PRONOUN/n_c:0/object} to safety.",
     "m_c": {
         "status": ["apprentice", "warrior", "deputy", "leader"]
     },
@@ -1886,7 +1887,7 @@
             "values": ["trust", "like"],
             "amount": 20,
                 "log": {
-                    "cats_from": "cat_from was thankful that cat_to prevented a bloody battle against o_c_n."
+                    "cats_from": "cat_from was thankful that cat_to prevented a bloody battle against an enemy Clan."
                 }
         }
     ],
@@ -1965,7 +1966,7 @@
     "relationships": [
         {
             "cats_from": ["clan"],
-            "cats_to": ["n_c:0, n_c:1, n_c:2"],
+            "cats_to": ["n_c:0", "n_c:1", "n_c:2"],
             "mutual": false,
             "values": ["trust", "like"],
             "amount": 10,
@@ -1975,7 +1976,7 @@
         },
         {
             "cats_from": ["clan", "high_aggress"],
-            "cats_to": ["n_c:0, n_c:1, n_c:2"],
+            "cats_to": ["n_c:0", "n_c:1", "n_c:2"],
             "mutual": false,
             "values": ["trust", "like"],
             "amount": -10,
@@ -2021,12 +2022,12 @@
     "relationships": [
         {
             "cats_from": ["clan"],
-            "cats_to": ["n_c:0, n_c:1, n_c:2"],
+            "cats_to": ["n_c:0", "n_c:1", "n_c:2"],
             "mutual": false,
             "values": ["trust", "like"],
             "amount": -10,
             "log": {
-                    "cats_from": "cat_from will remember the rogue who dared to attack c_n so brazenly during a battle against o_c_n."
+                    "cats_from": "cat_from will remember the rogue who dared to attack c_n so brazenly during a battle against an enemy Clan."
                 }
         }
     ],
@@ -2067,17 +2068,17 @@
     "relationships": [
         {
             "cats_from": ["clan"],
-            "cats_to": ["n_c:0, n_c:1, n_c:2"],
+            "cats_to": ["n_c:0", "n_c:1", "n_c:2"],
             "mutual": false,
             "values": ["trust", "like"],
             "amount": 10,
             "log": {
-                    "cats_from": "cat_from will remember the kittypet who dared to stop an entire battle against o_c_n."
+                    "cats_from": "cat_from will remember the kittypet who dared to stop an entire battle against an enemy Clan."
                 }
         },
         {
             "cats_from": ["clan", "high_lawful"],
-            "cats_to": ["n_c:0, n_c:1, n_c:2"],
+            "cats_to": ["n_c:0", "n_c:1", "n_c:2"],
             "mutual": false,
             "values": ["trust", "like"],
             "amount": -15,
@@ -2503,7 +2504,7 @@
     "event_text": "A loner named n_c:0 seeks m_c's help with kitting. As n_c:0 feared, the birth is hard. m_c watches {PRONOUN/n_c:0/object} struggle and bleed out. The Clan could use more kits, after all.",
     "m_c": {
         "status": ["medicine cat"],
-        "trait": ["bloodthirsty", "cold", "cunning", "sneaky"]
+        "trait": ["bloodthirsty", "cold", "cunning"]
     },
     "new_cat": [
         ["age:has_kits",
@@ -2802,7 +2803,7 @@
     },
     "r_c": {
         "status": ["leader"],
-        "trait": ["shameless", "arrogant", "bold", "cold", "ambitious", "cunning", "sneaky"]
+        "trait": ["shameless", "arrogant", "bold", "cold", "ambitious", "cunning"]
     },
     "new_cat": [
         ["age:has_kits",
@@ -2899,7 +2900,7 @@
     "event_text": "A loner named n_c:0 seeks m_c's help with kitting. After the birth, m_c breaks the news to n_c:0 that one kit was stillborn. Once n_c:0 has left the territory, m_c allows n_c:2 out of the medicine den to join {PRONOUN/n_c:2/poss} new Clan.",
     "m_c": {
         "status": ["medicine cat"],
-        "trait": ["shameless", "arrogant", "bold", "cold", "ambitious", "cunning", "sneaky"]
+        "trait": ["shameless", "arrogant", "bold", "cold", "ambitious", "cunning"]
     },
     "new_cat": [
         ["age:has_kits",
