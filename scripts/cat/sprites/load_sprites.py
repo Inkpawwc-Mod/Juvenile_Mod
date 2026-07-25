@@ -328,8 +328,8 @@ class Sprites:
             self.make_group("fadeunknownresidence", (i, 0), f"fadeur{i}")
 
         for data in data_jsons:
-            # collar accs
-            # this guy is special since it uses palette mapping
+            # collar accs and eyes
+            # these guys are special since they use palette mapping
             if data == self.COLLAR_DATA and self.COLLAR_DATA["palette_map"]:
                 spritesheet = self.COLLAR_DATA["spritesheet"]
                 for row, style_type in enumerate(self.COLLAR_DATA["style_data"]):
@@ -339,6 +339,16 @@ class Sprites:
                             pos=(col, row),
                             name=f"{spritesheet}{style}",
                             palettes=style_type[style],
+                        )
+            elif data == self.EYE_DATA and self.EYE_DATA["palette_map"]:
+                spritesheet = self.EYE_DATA["spritesheet"]
+                for row, colour_type in enumerate(self.EYE_DATA["colour_data"]):
+                    for col, colour in enumerate(colour_type):
+                        self.make_group(
+                            spritesheet=spritesheet,
+                            pos=(col, row),
+                            name=f"{spritesheet}{colour}",
+                            palettes=colour_type[colour],
                         )
 
             # these have multiple sprite sheets, so are handled differently from the others
