@@ -1,4 +1,5 @@
 import random
+from enum import nonmember
 from random import choice
 from re import sub
 
@@ -126,6 +127,7 @@ class Pelt:
     yellow_eyes: list = []
     green_eyes: list = []
     blue_eyes: list = []
+    eye_colour_description: list = []
     if sprites.EYE_DATA["palette_map"]:
         for colour_type in sprites.EYE_DATA["colour_data"]:
             for colour, colour_list in colour_type.items():
@@ -137,6 +139,7 @@ class Pelt:
                     elif colour == "BLUE":
                         blue_eyes.append(f"{colour}_{c}")
                     all_eye_colours.append(f"{colour}_{c}")
+                    eye_colour_description.append(f"{c}")
 
 
     else:
@@ -1282,15 +1285,23 @@ class Pelt:
         )
 
     def describe_eyes(self):
+        eye1 = None
+        eye2 = None
+        for colour in Pelt.eye_colour_description:
+            if colour in self.eye_colour:
+                eye1 = colour
+            if self.eye_colour2 is not None:
+                if colour in self.eye_colour2:
+                    eye2 = colour
         return (
             adjust_list_text(
                 [
-                    i18n.t(f"{self.eye_colour}"),
-                    i18n.t(f"{self.eye_colour2}"),
+                    i18n.t(f"{eye1}"),
+                    i18n.t(f"{eye2}"),
                 ]
             )
             if self.eye_colour2
-            else i18n.t(f"{self.eye_colour}")
+            else i18n.t(f"{eye1}")
         )
 
     @staticmethod
