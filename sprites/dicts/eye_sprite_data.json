@@ -14,7 +14,9 @@
                 "paleblue",
                 "aurora",
                 "sea",
-                "bluebell"
+                "bluebell",
+                "periwinkle",
+                "lavender"
             ]
         },
         {
@@ -24,7 +26,17 @@
                 "green",
                 "emerald",
                 "sage",
-                "forest"
+                "forest",
+                "olive",
+                "cattail",
+                "grassygreen",
+                "fern",
+                "lichen",
+                "mossy",
+                "lime",
+                "leaf",
+                "aquamarine",
+                "cactus"
             ]
         },
         {
@@ -41,7 +53,11 @@
                 "dawn",
                 "dusk",
                 "mustard",
-                "earthy"
+                "earthy",
+                "maple",
+                "sand",
+                "wildfire",
+                "yew"
             ]
         }
     ]

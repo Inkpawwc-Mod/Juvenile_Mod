@@ -138,6 +138,7 @@ class Pelt:
                         blue_eyes.append(f"{colour}_{c}")
                     all_eye_colours.append(f"{colour}_{c}")
 
+
     else:
         for sprite_list in sprites.EYE_DATA["sprite_list"]:
             all_eye_colours.extend(sprite_list.keys())
@@ -1284,12 +1285,12 @@ class Pelt:
         return (
             adjust_list_text(
                 [
-                    i18n.t(f"cat.eyes.{self.eye_colour}"),
-                    i18n.t(f"cat.eyes.{self.eye_colour2}"),
+                    i18n.t(f"{self.eye_colour}"),
+                    i18n.t(f"{self.eye_colour2}"),
                 ]
             )
             if self.eye_colour2
-            else i18n.t(f"cat.eyes.{self.eye_colour}")
+            else i18n.t(f"{self.eye_colour}")
         )
 
     @staticmethod
